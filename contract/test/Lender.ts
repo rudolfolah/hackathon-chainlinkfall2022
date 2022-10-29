@@ -1,9 +1,8 @@
-import { time, loadFixture } from "@nomicfoundation/hardhat-network-helpers";
-import { anyValue } from "@nomicfoundation/hardhat-chai-matchers/withArgs";
+import { loadFixture } from "@nomicfoundation/hardhat-network-helpers";
 import { expect } from "chai";
 import { ethers } from "hardhat";
 
-describe("Lender", function() {
+describe("Lender", function () {
   async function deployLenderFixture() {
     const [owner] = await ethers.getSigners();
     const Lender = await ethers.getContractFactory("Lender");
@@ -11,10 +10,32 @@ describe("Lender", function() {
     return { lender, owner };
   }
 
-  describe("Deployment", function() {
-    it("sets the correct owner", async function() {
+  async function deployERC721Fixture() {
+    // const nftContractOwner = await ethers.Wallet.createRandom();
+    // nftContractOwner.connect(ethers.provider);
+    // const ContractFactory = await ethers.getContractFactory("TestToken");
+    // const signer = ethers.provider.getSigner(nftContractOwner.address);
+    // const nft = await ContractFactory.connect(signer).deploy();
+
+    const [_, nftContractOwner, ownerOfNft] = await ethers.getSigners();
+    const ContractFactory = await ethers.getContractFactory("TestToken", nftContractOwner);
+    const nft = await ContractFactory.deploy();
+    await nft.safeMint(ownerOfNft.address);
+    return { nft, nftContractOwner, ownerOfNft };
+  }
+
+  describe("Deployment", function () {
+    it("sets the correct owner", async function () {
       const { lender, owner } = await loadFixture(deployLenderFixture);
       expect(await lender.owner()).to.equal(owner.address);
+    });
+  });
+
+  describe("Loan Calculation", function () {
+    it("returns 0 loan amount and interest rate if NFT is not owned by the borrower", async function () {
+      const { nft, nftContractOwner, ownerOfNft } = await loadFixture(deployERC721Fixture);
+      const { lender, owner } = await loadFixture(deployLenderFixture);
+      await lender.calculateLoan(ownerOfNft.address, nft.address, 1);
     });
   });
 });
