@@ -17,6 +17,14 @@ describe("Lender", function () {
     // const signer = ethers.provider.getSigner(nftContractOwner.address);
     // const nft = await ContractFactory.connect(signer).deploy();
 
+    const mockV3AggregatorFactory = await ethers.getContractFactory(
+      "MockV3Aggregator"
+    );
+    const mockV3Aggregator = await mockV3AggregatorFactory
+      .connect(deployer)
+      .deploy(DECIMALS, INITIAL_PRICE);
+
+    // Mock NFT Contract
     const [_, nftContractOwner, ownerOfNft] = await ethers.getSigners();
     const ContractFactory = await ethers.getContractFactory("TestToken", nftContractOwner);
     const nft = await ContractFactory.deploy();
