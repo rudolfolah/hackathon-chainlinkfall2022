@@ -1,10 +1,19 @@
 // SPDX-License-Identifier: APACHE-2.0
 pragma solidity ^0.8.9;
 
+import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
+
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract Lender is Ownable {
+    // Truflation:
+    // * https://github.com/truflation/quickstart
+    // * https://github.com/truflation/nft-index-adapter
+    // * https://market.link/nodes/Truflation/integrations
+    AggregatorV3Interface internal nftPriceFeed;
+    AggregatorV3Interface internal priceFeed;
+
     struct Loan {
         address nftContract;
         uint256 tokenId;
@@ -33,7 +42,52 @@ contract Lender is Ownable {
 
     event Withdrawal(address nftContract, uint256 tokenId);
 
+    constructor(address nftPriceFeedAddr, address priceFeedAddr) {
+        nftPriceFeed = AggregatorV3Interface(
+            nftPriceFeedAddr
+            // 0x17dED59fCd940F0a40462D52AAcD11493C6D8073
+        );
+
+        /**
+         * Network: Ethereum Goerli (1)
+         * Aggregator: ETH / USD
+         * Address: 0xD4a33860578De61DBAbDc8BFdb98FD742fA7028e
+         */
+        priceFeed = AggregatorV3Interface(
+            priceFeedAddr
+            // 0xD4a33860578De61DBAbDc8BFdb98FD742fA7028e
+        );
+    }
+
+    /**
+     * Returns the latest price
+     */
+    function getLatestPrice() public view returns (int256) {
+        (
+            ,
+            /*uint80 roundID*/
+            int256 price,
+            ,
+            /*uint startedAt*/
+            uint256 timeStamp, /*uint80 answeredInRound*/
+
+        ) = priceFeed.latestRoundData();
+        require(timeStamp > 0, "Round not complete");
+        return price;
+    }
+
     function setLoanAmountBounds(uint256 min, uint256 max) public onlyOwner {
+        require(
+            min < max,
+            "Loan amount minimum must be less than loan amount maximum"
+        );
+        require(min > 0, "Loan amount minimum must be greater than zero");
+        require(
+            max <= 10000 ether,
+            "Loan amount maximum must be less than 10,000 ETH"
+        );
+        loanAmountMin = min;
+        loanAmountMax = max;
         emit LoanAmountBoundsUpdated(min, max);
     }
 
@@ -41,7 +95,8 @@ contract Lender is Ownable {
         address walletAddress,
         address nftContract,
         uint256 tokenId
-    ) pure public returns (uint256, uint256) {
+    ) public pure returns (uint256, uint256) {
+        getLatestPrice()
         return (0, 0);
     }
 
