@@ -76,6 +76,21 @@ contract Lender is Ownable {
         return price;
     }
 
+    function getNftPriceIndex() public view {
+        /*
+        {
+            timestamp: '2021-10-10T00:00:00.000Z',
+            index: 104.6402453102453,
+            aDayChange: 0.24229362591431586,
+            aMonthChange: 25.03669682169257
+          }
+        */
+        (
+            uint256 timestamp,
+            uint256 index,
+        ) = nftPriceFeed.getRoundData();
+    }
+
     function setLoanAmountBounds(uint256 min, uint256 max) public onlyOwner {
         require(
             min < max,
