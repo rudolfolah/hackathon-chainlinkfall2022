@@ -1,0 +1,9 @@
+.button--connect-to-wallet {
+    background: linear-gradient(257.73deg, #FFDE59 5.06%, #ED2222 35.84%, #EF3627 65.62%, #C42222 92.93%);
+    border: 1px solid #000000;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    font-size: 24px;
+    line-height: 29px;
+    text-align: center;
+    padding: 2rem 1rem;
+}
