@@ -1,7 +1,9 @@
 import { Box, Collapse, CloseButton, Flex, VStack, IconButton, Button, Text, Heading, Spacer } from "@chakra-ui/react";
 import {PlusSquareIcon} from "@chakra-ui/icons";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useContractWrite, usePrepareContractWrite} from "wagmi";
+import {contractAbi, contractAddress} from "../contract";
+import {BigNumber} from "ethers";
 
 export interface LoanOption {
   numDays: number,
@@ -23,11 +25,18 @@ export function NftItem({ name }: NftItemProps) {
   const close = () => setIsOpen(false);
   const open = () => setIsOpen(true);
 
-  // const { config: configContractWriteSetLoanAmountBounds } = usePrepareContractWrite({
-  //   address: contractAddress,
-  //   functionName: "setLoanAmountBounds",
-  // });
-  // const { write: contractWriteSetLoanAmountBounds } = useContractWrite(configContractWriteSetLoanAmountBounds);
+  const { config: configContractWriteSetLoanAmountBounds } = usePrepareContractWrite({
+    address: contractAddress,
+    abi: contractAbi,
+    functionName: "setLoanAmountBounds",
+    args: [BigNumber.from(4), BigNumber.from(10)],
+  });
+  const {
+    data: setLoanAmountBoundsData,
+    isSuccess: setLoanAmountBoundsIsSuccess,
+    isLoading: setLoanAmountBoundsIsLoading,
+    write: contractWriteSetLoanAmountBounds
+  } = useContractWrite(configContractWriteSetLoanAmountBounds);
 
   return (
     <VStack alignItems={"normal"}
@@ -56,9 +65,12 @@ export function NftItem({ name }: NftItemProps) {
                       bgGradient={index == 0 ? "linear(76.71deg, #FEE186 11.01%, #FCD456 31.68%, #FFEAA8 69.1%, #EFC235 97.65%)" : undefined}
                       variant={"outline"}
                       borderColor={"#aaa"}
+                      onClick={() => { contractWriteSetLoanAmountBounds?.(); }}
               >
                 {option.amount} ETH @ {option.rate}%
               </Button>
+              {setLoanAmountBoundsIsSuccess}
+              {setLoanAmountBoundsIsLoading}
             </Box>
           </Flex>
         ))}
