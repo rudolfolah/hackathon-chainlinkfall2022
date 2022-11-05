@@ -8,11 +8,11 @@ export interface LoanOption {
   rate: number;
 }
 
-export interface NftLoanItemProps {
+export interface NftItemProps {
   name: string;
 }
 
-export function NftLoanItem({ name }: NftLoanItemProps) {
+export function NftItem({ name }: NftItemProps) {
   const [loanOptions, setLoanOptions] = useState<LoanOption[]>([
     { numDays: 7, amount: 1.25, rate: 5.25 },
     { numDays: 14, amount: 1.1, rate: 7.55 },
@@ -33,7 +33,7 @@ export function NftLoanItem({ name }: NftLoanItemProps) {
         </Box>
         <Spacer />
         <Box>
-          {isOpen ? <CloseButton /> : <IconButton aria-label={"open"} icon={<PlusSquareIcon />} variant={"ghost"} />}
+          {isOpen ? <CloseButton onClick={close} /> : <IconButton aria-label={"open"} icon={<PlusSquareIcon onClick={open} />} variant={"ghost"} />}
         </Box>
       </Flex>
       <Collapse in={isOpen} animateOpacity>

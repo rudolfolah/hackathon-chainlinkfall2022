@@ -1,7 +1,14 @@
 import React from "react";
 import { Box, Button, Divider, Heading, VStack } from "@chakra-ui/react";
+import {useAccount, useConnect} from "wagmi";
+import {InjectedConnector} from "wagmi/connectors/injected";
+
 
 export function Login() {
+  const { address, isConnected } = useAccount();
+  const { connect } = useConnect({
+    connector: new InjectedConnector(),
+  });
   return (
     <VStack divider={<Divider borderColor={"gray.400"} />} spacing={12} m={4}>
       <Box textAlign={"center"}>
@@ -10,7 +17,7 @@ export function Login() {
       </Box>
       <Box>
         <Box textAlign={"center"}>
-          <Button colorScheme={"orange"} size={"lg"}>
+          <Button colorScheme={"orange"} size={"lg"} onClick={() => connect()}>
             Connect to Wallet
           </Button>
         </Box>
