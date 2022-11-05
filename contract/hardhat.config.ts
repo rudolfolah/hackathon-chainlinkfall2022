@@ -1,7 +1,13 @@
+import * as dotenv from "dotenv";
+dotenv.config();
+
 import { HardhatUserConfig } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
-import "hardhat-deploy";
 import "hardhat-gas-reporter";
+
+if (!process.env.WALLET_PRIVATE_KEY) {
+    process.exit(5);
+}
 
 const config: HardhatUserConfig = {
     solidity: "0.8.17",
@@ -9,6 +15,12 @@ const config: HardhatUserConfig = {
         enabled: true,
         gasPriceApi: "https://api.polygonscan.com/api?module=proxy&action=eth_gasPrice",
     },
+    networks: {
+        mumbai: {
+            url: "https://rpc-mumbai.maticvigil.com",
+            accounts: [process.env.WALLET_PRIVATE_KEY],
+        }
+    }
 };
 
 export default config;

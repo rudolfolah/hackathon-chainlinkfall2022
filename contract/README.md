@@ -1,13 +1,14 @@
-# Sample Hardhat Project
+# Lender contract
 
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, and a script that deploys that contract.
-
-Try running some of the following tasks:
+Deploying to testnet requires that you set up a `.env` file with a `WALLET_PRIVATE_KEY` which is the account private key to use to deploy the contract.
 
 ```shell
-npx hardhat help
-npx hardhat test
-REPORT_GAS=true npx hardhat test
-npx hardhat node
-npx hardhat run scripts/deploy.ts
+# Re-format the code
+npm run-script prettier
+
+# Run unit tests
+npm test
+
+# Deploy to Polygon testnet
+npm run-script deploy
 ```
