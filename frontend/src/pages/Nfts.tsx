@@ -2,9 +2,23 @@ import {Box, Divider, Text, VStack} from "@chakra-ui/react";
 
 import {NftItem} from "../components/NftItem";
 import {PageHeader} from "../components/PageHeader";
+import {useContractRead, useContractWrite} from "wagmi";
+import {useEffect} from "react";
+import {contractAbi, contractAddress} from "../contract"
 
 
 export function Nfts() {
+  const { data, isLoading, isError } = useContractRead({
+    address: contractAddress,
+    abi: contractAbi,
+    functionName: "loanAmountMin",
+  });
+  useEffect(() => {
+    console.log(isLoading);
+    console.log(isError);
+    console.log(data);
+  }, [data, isLoading, isError]);
+
   return (
     <VStack>
       <PageHeader title={"NFTs"}>

@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import {chain, configureChains, createClient, WagmiConfig, useAccount} from "wagmi";
 import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
+import { publicProvider } from "wagmi/providers/public";
 import {Center, Tabs, TabList, TabPanels, TabPanel, Tab, Badge, Text, Heading} from "@chakra-ui/react";
 
 import "./App.css";
@@ -21,6 +22,7 @@ const { chains, provider, webSocketProvider } = configureChains(
         webSocket: "wss://maximum-small-hexagon.matic-testnet.discover.quiknode.pro/6093ef65b60c6a7d7e7635c01534aa7afbec5689/",
       }),
     }),
+    publicProvider(),
   ],
 );
 

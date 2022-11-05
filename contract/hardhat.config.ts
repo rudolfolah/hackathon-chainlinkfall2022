@@ -4,6 +4,7 @@ dotenv.config();
 import { HardhatUserConfig } from "hardhat/config";
 import "@nomicfoundation/hardhat-toolbox";
 import "hardhat-gas-reporter";
+import "hardhat-abi-exporter";
 
 if (!process.env.WALLET_PRIVATE_KEY) {
     process.exit(5);
@@ -14,6 +15,9 @@ const config: HardhatUserConfig = {
     gasReporter: {
         enabled: true,
         gasPriceApi: "https://api.polygonscan.com/api?module=proxy&action=eth_gasPrice",
+    },
+    abiExporter: {
+      runOnCompile: true,
     },
     networks: {
         mumbai: {

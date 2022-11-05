@@ -1,6 +1,7 @@
 import { Box, Collapse, CloseButton, Flex, VStack, IconButton, Button, Text, Heading, Spacer } from "@chakra-ui/react";
 import {PlusSquareIcon} from "@chakra-ui/icons";
 import {useState} from "react";
+import {useContractWrite, usePrepareContractWrite} from "wagmi";
 
 export interface LoanOption {
   numDays: number,
@@ -21,6 +22,12 @@ export function NftItem({ name }: NftItemProps) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const close = () => setIsOpen(false);
   const open = () => setIsOpen(true);
+
+  // const { config: configContractWriteSetLoanAmountBounds } = usePrepareContractWrite({
+  //   address: contractAddress,
+  //   functionName: "setLoanAmountBounds",
+  // });
+  // const { write: contractWriteSetLoanAmountBounds } = useContractWrite(configContractWriteSetLoanAmountBounds);
 
   return (
     <VStack alignItems={"normal"}

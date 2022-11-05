@@ -9,3 +9,8 @@ typechain-types
 cache
 artifacts
 
+# ABI contracts
+abi/@chainlink
+abi/@openzeppelin
+abi/contracts/mocks
+
