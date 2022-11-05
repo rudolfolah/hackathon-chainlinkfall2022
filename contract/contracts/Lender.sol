@@ -76,20 +76,17 @@ contract Lender is Ownable {
         return price;
     }
 
-    function getNftPriceIndex() public view {
-        /*
-        {
-            timestamp: '2021-10-10T00:00:00.000Z',
-            index: 104.6402453102453,
-            aDayChange: 0.24229362591431586,
-            aMonthChange: 25.03669682169257
-          }
-        */
-        (
-            uint256 timestamp,
-            uint256 index,
-        ) = nftPriceFeed.getRoundData();
-    }
+    //    function getNftPriceIndex() public view {
+    //        /*
+    //        {
+    //            timestamp: '2021-10-10T00:00:00.000Z',
+    //            index: 104.6402453102453,
+    //            aDayChange: 0.24229362591431586,
+    //            aMonthChange: 25.03669682169257
+    //          }
+    //        */
+    //        (uint256 timestamp, uint256 index, ) = nftPriceFeed.latestRoundData();
+    //    }
 
     function setLoanAmountBounds(uint256 min, uint256 max) public onlyOwner {
         require(
@@ -110,9 +107,9 @@ contract Lender is Ownable {
         address walletAddress,
         address nftContract,
         uint256 tokenId
-    ) public pure returns (uint256, uint256) {
-        getLatestPrice()
-        return (0, 0);
+    ) public view returns (uint256, uint256) {
+        getLatestPrice();
+        return (uint256(0), uint256(0));
     }
 
     function depositNft721(address nftContract, uint256 tokenId) public {
