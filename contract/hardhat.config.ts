@@ -7,6 +7,7 @@ const config: HardhatUserConfig = {
     solidity: "0.8.17",
     gasReporter: {
         enabled: true,
+        gasPriceApi: "https://api.polygonscan.com/api?module=proxy&action=eth_gasPrice",
     },
 };
 
