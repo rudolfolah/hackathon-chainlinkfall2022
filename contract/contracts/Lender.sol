@@ -196,10 +196,4 @@ contract Lender is ChainlinkClient, ConfirmedOwner {
             loans[msg.sender].tokenId
         );
     }
-
-    function toInt256(bytes memory _bytes) public pure returns (int256 value) {
-        assembly {
-            value := mload(add(_bytes, 0x20))
-        }
-    }
 }
