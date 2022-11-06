@@ -14,7 +14,7 @@ import {
 import {PlusSquareIcon} from "@chakra-ui/icons";
 import {useEffect, useState} from "react";
 import {useContractWrite, usePrepareContractWrite} from "wagmi";
-import {contractAbi, contractAddress} from "../contract";
+import {contractAbi, contractAddress, nftContractAddress} from "../contract";
 import {BigNumber} from "ethers";
 
 export interface LoanOption {
@@ -41,7 +41,9 @@ export function NftItem({ name, tokenId }: NftItemProps) {
   const { config: configContractWriteSetLoanAmountBounds } = usePrepareContractWrite({
     address: contractAddress,
     abi: contractAbi,
-    functionName: "requestUpdateLoanConfig",
+    functionName: "depositNft721",
+    args: [nftContractAddress, BigNumber.from(tokenId)],
+    // functionName: "requestUpdateLoanConfig",
     // args: [BigNumber.from(4), BigNumber.from(10)],
     overrides: {
       gasLimit: BigNumber.from(200000),
