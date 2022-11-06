@@ -1,4 +1,16 @@
-import { Box, Collapse, CloseButton, Flex, VStack, IconButton, Button, Text, Heading, Spacer } from "@chakra-ui/react";
+import {
+  Box,
+  Collapse,
+  CloseButton,
+  Flex,
+  VStack,
+  IconButton,
+  Button,
+  Text,
+  Heading,
+  Spacer,
+  Image
+} from "@chakra-ui/react";
 import {PlusSquareIcon} from "@chakra-ui/icons";
 import {useEffect, useState} from "react";
 import {useContractWrite, usePrepareContractWrite} from "wagmi";
@@ -13,9 +25,10 @@ export interface LoanOption {
 
 export interface NftItemProps {
   name: string;
+  tokenId: number;
 }
 
-export function NftItem({ name }: NftItemProps) {
+export function NftItem({ name, tokenId }: NftItemProps) {
   const [loanOptions, setLoanOptions] = useState<LoanOption[]>([
     { numDays: 7, amount: 1.25, rate: 5.25 },
     { numDays: 14, amount: 1.1, rate: 7.55 },
@@ -49,6 +62,7 @@ export function NftItem({ name }: NftItemProps) {
       <Flex py={1} mb={2}>
         <Box flex={"2"} flexBasis={"50%"} onClick={isOpen ? close : open}>
           <Heading as={"h4"} size={"md"} textAlign={"left"}>{name}</Heading>
+          <Image boxSize={isOpen ? "100%" : "60%"} fit={"contain"} src={`/images/nft-example-${tokenId}.png`} />
         </Box>
         <Spacer />
         <Box>
