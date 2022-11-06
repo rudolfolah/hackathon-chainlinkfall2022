@@ -1,6 +1,6 @@
-export const tokenContractAddress = "0xD34B4cB0b29E1a17DDbA07517cA84A6F4ff6E7BF";
-export const nftContractAddress = "0x10685E8443182C4e3682CC0F6Fc49e39F6dF5AC7";
-export const contractAddress = "0xb1c378582bB386C85c8e9e54f7d1EAbDD487a081";
+export const tokenContractAddress = "0x603Ef8e64852874AA9ae8fE97D22f17c640D19aD";
+export const nftContractAddress = "0x7B44Cbe90036F9e27b7B12760d3b316c43EF92ED";
+export const contractAddress = "0xbFCf845d948672Ed6f436f0540fB7a58F09E0F2e";
 export const tokenContractAbi = [
   {
     "inputs": [],
