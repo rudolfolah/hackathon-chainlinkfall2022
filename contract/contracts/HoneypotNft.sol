@@ -15,6 +15,13 @@ contract HoneypotNft is ERC721, Ownable {
         safeMint(msg.sender);
         safeMint(msg.sender);
         safeMint(msg.sender);
+
+        safeMint(msg.sender);
+        safeMint(msg.sender);
+        safeMint(msg.sender);
+        safeMint(msg.sender);
+
+        safeMint(msg.sender);
         safeMint(msg.sender);
         safeMint(msg.sender);
         safeMint(msg.sender);
