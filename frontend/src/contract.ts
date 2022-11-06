@@ -1,23 +1,69 @@
-export const contractAddress = "0x5b4B6ae4385b50fac498651a1f63A4CF59783a2A";
-
-// copy the ABI from the contract, contract/abi/contracts/Lender.sol/Lender.json
-
+export const contractAddress = "0x68a414D80730841692E17437D6b1DAABE42EF3db";
 export const contractAbi = [
   {
     "inputs": [
       {
         "internalType": "address",
-        "name": "nftPriceFeedAddr",
+        "name": "chainlinkToken_",
         "type": "address"
       },
       {
         "internalType": "address",
-        "name": "priceFeedAddr",
+        "name": "chainlinkOracle_",
         "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "truflationOracleId_",
+        "type": "address"
+      },
+      {
+        "internalType": "string",
+        "name": "truflationJobId_",
+        "type": "string"
       }
     ],
     "stateMutability": "nonpayable",
     "type": "constructor"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "id",
+        "type": "bytes32"
+      }
+    ],
+    "name": "ChainlinkCancelled",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "id",
+        "type": "bytes32"
+      }
+    ],
+    "name": "ChainlinkFulfilled",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "bytes32",
+        "name": "id",
+        "type": "bytes32"
+      }
+    ],
+    "name": "ChainlinkRequested",
+    "type": "event"
   },
   {
     "anonymous": false,
@@ -75,13 +121,32 @@ export const contractAbi = [
       {
         "indexed": true,
         "internalType": "address",
-        "name": "previousOwner",
+        "name": "from",
         "type": "address"
       },
       {
         "indexed": true,
         "internalType": "address",
-        "name": "newOwner",
+        "name": "to",
+        "type": "address"
+      }
+    ],
+    "name": "OwnershipTransferRequested",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "from",
+        "type": "address"
+      },
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "to",
         "type": "address"
       }
     ],
@@ -106,6 +171,13 @@ export const contractAbi = [
     ],
     "name": "Withdrawal",
     "type": "event"
+  },
+  {
+    "inputs": [],
+    "name": "acceptOwnership",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
   },
   {
     "inputs": [
@@ -160,16 +232,21 @@ export const contractAbi = [
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "getLatestPrice",
-    "outputs": [
+    "inputs": [
       {
-        "internalType": "int256",
-        "name": "",
-        "type": "int256"
+        "internalType": "bytes32",
+        "name": "_requestId",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "bytes",
+        "name": "bytesData",
+        "type": "bytes"
       }
     ],
-    "stateMutability": "view",
+    "name": "fulfillTruflation",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -220,7 +297,7 @@ export const contractAbi = [
   },
   {
     "inputs": [],
-    "name": "renounceOwnership",
+    "name": "requestUpdateLoanConfig",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -247,13 +324,96 @@ export const contractAbi = [
     "inputs": [
       {
         "internalType": "address",
-        "name": "newOwner",
+        "name": "to",
         "type": "address"
       }
     ],
     "name": "transferOwnership",
     "outputs": [],
     "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "service_",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "data_",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "keypath_",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "abi_",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "multiplier_",
+        "type": "string"
+      },
+      {
+        "internalType": "uint256",
+        "name": "fee_",
+        "type": "uint256"
+      }
+    ],
+    "name": "truflationDoTransferAndRequest",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "requestId",
+        "type": "bytes32"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "truflationJobId",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "truflationOracleId",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "truflationResult",
+    "outputs": [
+      {
+        "internalType": "bytes",
+        "name": "",
+        "type": "bytes"
+      }
+    ],
+    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -275,4 +435,5 @@ export const contractAbi = [
     "stateMutability": "view",
     "type": "function"
   }
-] as const;
+]
+;
