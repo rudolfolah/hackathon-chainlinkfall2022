@@ -1,18 +1,22 @@
 // SPDX-License-Identifier: APACHE-2.0
 pragma solidity ^0.8.9;
 
+import "@chainlink/contracts/src/v0.8/ChainlinkClient.sol";
+import "@chainlink/contracts/src/v0.8/ConfirmedOwner.sol";
 import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
-
+import "@openzeppelin/contracts/utils/Strings.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract Lender is Ownable {
+contract Lender is ChainlinkClient, ConfirmedOwner {
+    using Chainlink for Chainlink.Request;
+
     // Truflation:
     // * https://github.com/truflation/quickstart
     // * https://github.com/truflation/nft-index-adapter
     // * https://market.link/nodes/Truflation/integrations
-    AggregatorV3Interface internal nftPriceFeed;
-    AggregatorV3Interface internal priceFeed;
+    address public truflationOracleId;
+    string public truflationJobId;
+    bytes public truflationResult;
 
     struct Loan {
         address nftContract;
@@ -42,58 +46,67 @@ contract Lender is Ownable {
 
     event Withdrawal(address nftContract, uint256 tokenId);
 
-    constructor(address nftPriceFeedAddr, address priceFeedAddr) {
-        nftPriceFeed = AggregatorV3Interface(
-            nftPriceFeedAddr
-            // 0x17dED59fCd940F0a40462D52AAcD11493C6D8073
-        );
+    constructor(
+        address chainlinkToken_,
+        address chainlinkOracle_,
+        address truflationOracleId_,
+        string memory truflationJobId_
+    ) ConfirmedOwner(msg.sender) {
+        setChainlinkToken(chainlinkToken_);
+        setChainlinkOracle(chainlinkOracle_);
+        truflationOracleId = truflationOracleId_;
+        truflationJobId = truflationJobId_;
 
-        /**
-         * Network: Ethereum Goerli (1)
-         * Aggregator: ETH / USD
-         * Address: 0xD4a33860578De61DBAbDc8BFdb98FD742fA7028e
-         */
-        priceFeed = AggregatorV3Interface(
-            priceFeedAddr
-            // 0xD4a33860578De61DBAbDc8BFdb98FD742fA7028e
-        );
+        loanAmountMin = 0.01 ether;
+        loanAmountMax = 5 ether;
     }
 
-    /**
-     * Returns the latest price
-     */
-    function getLatestPrice() public view returns (int256) {
-        (
-            ,
-            /*uint80 roundID*/
-            int256 price,
-            ,
-            /*uint startedAt*/
-            uint256 timeStamp, /*uint80 answeredInRound*/
-
-        ) = priceFeed.latestRoundData();
-        require(timeStamp > 0, "Round not complete");
-        return price;
+    function truflationDoTransferAndRequest(
+        string memory service_,
+        string memory data_,
+        string memory keypath_,
+        string memory abi_,
+        string memory multiplier_,
+        uint256 fee_
+    ) public returns (bytes32 requestId) {
+        require(
+            LinkTokenInterface(chainlinkTokenAddress()).transferFrom(
+                msg.sender,
+                address(this),
+                fee_
+            ),
+            "transfer failed"
+        );
+        Chainlink.Request memory req = buildChainlinkRequest(
+            bytes32(bytes(truflationJobId)),
+            address(this),
+            this.fulfillTruflation.selector
+        );
+        req.add("service", service_);
+        req.add("data", data_);
+        req.add("keypath", keypath_);
+        req.add("abi", abi_);
+        req.add("multiplier", multiplier_);
+        req.add("refundTo", Strings.toHexString(uint160(msg.sender), 20));
+        return sendChainlinkRequestTo(truflationOracleId, req, fee_);
     }
 
-    //    function getNftPriceIndex() public view {
-    //        /*
-    //        {
-    //            timestamp: '2021-10-10T00:00:00.000Z',
-    //            index: 104.6402453102453,
-    //            aDayChange: 0.24229362591431586,
-    //            aMonthChange: 25.03669682169257
-    //          }
-    //        */
-    //        (uint256 timestamp, uint256 index, ) = nftPriceFeed.latestRoundData();
-    //    }
+    function fulfillTruflation(bytes32 _requestId, bytes memory bytesData)
+        public
+        recordChainlinkFulfillment(_requestId)
+    {
+        truflationResult = bytesData;
+    }
 
     function setLoanAmountBounds(uint256 min, uint256 max) public onlyOwner {
         require(
             min < max,
             "Loan amount minimum must be less than loan amount maximum"
         );
-        require(min > 0, "Loan amount minimum must be greater than zero");
+        require(
+            min > 0.001 ether,
+            "Loan amount minimum must be greater than zero"
+        );
         require(
             max <= 10000 ether,
             "Loan amount maximum must be less than 10,000 ETH"
@@ -103,12 +116,22 @@ contract Lender is Ownable {
         emit LoanAmountBoundsUpdated(min, max);
     }
 
+    function requestUpdateLoanConfig() public onlyOwner {
+        truflationDoTransferAndRequest(
+            "nft-index",
+            "",
+            "index",
+            "json",
+            "",
+            1000000000000000000
+        );
+    }
+
     function calculateLoan(
         address walletAddress,
         address nftContract,
         uint256 tokenId
     ) public view returns (uint256, uint256) {
-        getLatestPrice();
         return (uint256(0), uint256(0));
     }
 

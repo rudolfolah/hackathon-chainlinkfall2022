@@ -10,15 +10,15 @@ describe("Lender", function () {
     const DECIMALS = "18";
     const INITIAL_PRICE = "200000000000000000000";
 
-    const mockV3AggregatorFactory = await ethers.getContractFactory(
+    const MockV3AggregatorFactory = await ethers.getContractFactory(
       "MockV3Aggregator"
     );
-    const mockV3Aggregator = await mockV3AggregatorFactory
-      .connect(deployer)
-      .deploy(DECIMALS, INITIAL_PRICE);
+    const mockV3Aggregator = await MockV3AggregatorFactory.connect(
+      deployer
+    ).deploy(DECIMALS, INITIAL_PRICE);
 
     // Mock NFT Contract
-    const [_, nftContractOwner, ownerOfNft] = await ethers.getSigners();
+    const [, nftContractOwner, ownerOfNft] = await ethers.getSigners();
     const ContractFactory = await ethers.getContractFactory(
       "TestToken",
       nftContractOwner
@@ -26,11 +26,34 @@ describe("Lender", function () {
     const nft = await ContractFactory.deploy();
     await nft.safeMint(ownerOfNft.address);
 
+    const [, , , truflationContractOwner] = await ethers.getSigners();
+    // Mock Chainlink
+    const MockChainlinkOracleFactory = await ethers.getContractFactory(
+      "MockChainlinkOracle"
+    );
+    const mockChainlinkOracle = await MockChainlinkOracleFactory.connect(
+      truflationContractOwner
+    ).deploy();
+
+    // Mock Truflation Data Feed
+    const MockTruflationDataFeedFactory = await ethers.getContractFactory(
+      "MockTruflationClient"
+    );
+    const mockTruflationDataFeed = await MockTruflationDataFeedFactory.connect(
+      truflationContractOwner
+    ).deploy();
+
+    const mockChainlinkToken = await MockTruflationDataFeedFactory.connect(
+      truflationContractOwner
+    ).deploy();
+
     // Lender Contract
     const Lender = await ethers.getContractFactory("Lender");
     const lender = await Lender.deploy(
-      mockV3Aggregator.address,
-      mockV3Aggregator.address
+      mockChainlinkToken.address,
+      mockChainlinkOracle.address,
+      mockTruflationDataFeed.address,
+      "0"
     );
 
     return { lender, deployer, nft, nftContractOwner, ownerOfNft };
@@ -82,6 +105,14 @@ describe("Lender", function () {
         1
       );
       expect(amount).to.equal(1);
+    });
+  });
+
+  describe("Chainlink Oracles Update Loan Configution", function () {
+    it("makes request to Truflation", async function () {
+      const { lender, deployer, nft, nftContractOwner, ownerOfNft } =
+        await loadFixture(deployLenderFixture);
+      await lender.requestUpdateLoanConfig();
     });
   });
 });
