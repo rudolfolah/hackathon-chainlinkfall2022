@@ -55,7 +55,7 @@ export function Nfts() {
           <Skeleton />
         </Box>)}
         {ownedNfts.map(ownedNft => (<Box w={"100%"}>
-          <NftItem name={`Prototype NFT #${ownedNft}`} tokenId={ownedNft} />
+          <NftItem key={`prototype-nft-${ownedNft}`} name={`Prototype NFT #${ownedNft}`} tokenId={ownedNft} />
         </Box>))}
       </VStack>
     </VStack>
