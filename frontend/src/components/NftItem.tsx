@@ -28,8 +28,11 @@ export function NftItem({ name }: NftItemProps) {
   const { config: configContractWriteSetLoanAmountBounds } = usePrepareContractWrite({
     address: contractAddress,
     abi: contractAbi,
-    functionName: "setLoanAmountBounds",
-    args: [BigNumber.from(4), BigNumber.from(10)],
+    functionName: "requestUpdateLoanConfig",
+    // args: [BigNumber.from(4), BigNumber.from(10)],
+    overrides: {
+      gasLimit: BigNumber.from(200000),
+    },
   });
   const {
     data: setLoanAmountBoundsData,

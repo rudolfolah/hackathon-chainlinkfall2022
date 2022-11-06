@@ -11,7 +11,7 @@ export function Nfts() {
   const { data, isLoading, isError } = useContractRead({
     address: contractAddress,
     abi: contractAbi,
-    functionName: "loanAmountMin",
+    functionName: "truflationResult",
   });
   useEffect(() => {
     console.log(isLoading);

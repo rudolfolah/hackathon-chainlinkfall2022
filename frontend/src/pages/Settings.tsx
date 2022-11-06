@@ -1,25 +1,42 @@
-import {useAccount, useConnect} from "wagmi";
-import {InjectedConnector} from "wagmi/connectors/injected";
-import {Box, Button, Divider, Heading, VStack} from "@chakra-ui/react";
+import {useAccount, useContractRead} from "wagmi";
+import {Box, Divider, Heading, SkeletonText, Spinner, Text, VStack} from "@chakra-ui/react";
 import React from "react";
+import * as contract from "../contract";
 
 export function Settings() {
-  const { address, isConnected } = useAccount();
-  const { connect } = useConnect({
-    connector: new InjectedConnector(),
+  const { address } = useAccount();
+
+  const owner = "0x8aa6013Ec2BAbE20dabF27149d8A20102B3F8062";
+  const { data: tokenBalance, isLoading: tokenBalanceLoading } = useContractRead({
+    address: contract.tokenContractAddress,
+    abi: contract.tokenContractAbi,
+    functionName: "balanceOf",
+    args: [owner],
   });
+
+  const { data: nftBalance, isLoading: nftBalanceLoading } = useContractRead({
+    address: contract.nftContractAddress,
+    abi: contract.nftContractAbi,
+    functionName: "balanceOf",
+    args: [owner],
+  });
+
   return (
     <VStack divider={<Divider borderColor={"gray.400"} />} spacing={12} m={4}>
+      <Box textAlign={"center"} overflowWrap={"anywhere"}>
+        <Text>Wallet: {address}</Text>
+      </Box>
       <Box>
-        <Box textAlign={"center"}>
-          <Button colorScheme={"orange"} size={"lg"} onClick={() => connect()}>
-            Connect to Wallet
-          </Button>
-        </Box>
-        <div>
-          <p>Secure and verified transactions.</p>
-          <p>NFT prices based on Truflation Index.</p>
-        </div>
+        <Heading>Honeypot Prototype Token</Heading>
+        <Text>
+          {tokenBalanceLoading ? <SkeletonText /> : `${tokenBalance?.toString()} HPT`}
+        </Text>
+      </Box>
+      <Box>
+        <Heading>Honeypot Nft</Heading>
+        <Text>
+          {nftBalanceLoading ? <SkeletonText /> : `Owns ${nftBalance?.toString()} Honeypot Prototype NFTs`}
+        </Text>
       </Box>
     </VStack>
   );

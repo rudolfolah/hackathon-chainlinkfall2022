@@ -16,7 +16,7 @@ contract Lender is ChainlinkClient, ConfirmedOwner {
     // * https://market.link/nodes/Truflation/integrations
     address public truflationOracleId;
     string public truflationJobId;
-    bytes public truflationResult;
+    string public truflationResult;
 
     struct Loan {
         address nftContract;
@@ -31,9 +31,20 @@ contract Lender is ChainlinkClient, ConfirmedOwner {
     // The lower bound on any individual loan amount
     uint256 public loanAmountMin;
 
+    // Each wallet can have one loan at a time
     mapping(address => Loan) private loans;
 
+    // The total of unpaid loans
     mapping(address => uint256) public unpaidLoanAmounts;
+
+    // This counts the total number of loans that are unpaid from the past or are currently in progress
+    mapping(address => uint256) public numberOfUnpaidLoans;
+
+    // The ERC721 NFT contracts allowed to be used for a loan
+    mapping(address => bool) public allowedNftContracts;
+
+    // The ERC20 token contract allowed to be exchanged
+    address public allowedTokenContract;
 
     event LoanAmountBoundsUpdated(uint256 min, uint256 max);
 
@@ -61,43 +72,64 @@ contract Lender is ChainlinkClient, ConfirmedOwner {
         loanAmountMax = 5 ether;
     }
 
-    function truflationDoTransferAndRequest(
-        string memory service_,
-        string memory data_,
-        string memory keypath_,
-        string memory abi_,
-        string memory multiplier_,
-        uint256 fee_
-    ) public returns (bytes32 requestId) {
-        require(
-            LinkTokenInterface(chainlinkTokenAddress()).transferFrom(
-                msg.sender,
-                address(this),
-                fee_
-            ),
-            "transfer failed"
-        );
+    function truflationDoRequest() public returns (bytes32 requestId) {
         Chainlink.Request memory req = buildChainlinkRequest(
-            bytes32(bytes(truflationJobId)),
+            bytes32(bytes("d220e5e687884462909a03021385b7ae")),
             address(this),
             this.fulfillTruflation.selector
         );
-        req.add("service", service_);
-        req.add("data", data_);
-        req.add("keypath", keypath_);
-        req.add("abi", abi_);
-        req.add("multiplier", multiplier_);
+        req.add("service", "nft-index");
+        req.add("data", '{"index":"nft/top11"}');
+        req.add("keypath", "index");
+        req.add("abi", "json");
+        req.add("multiplier", "");
         req.add("refundTo", Strings.toHexString(uint160(msg.sender), 20));
-        return sendChainlinkRequestTo(truflationOracleId, req, fee_);
+        return
+            sendChainlinkRequestTo(
+                0x6D141Cf6C43f7eABF94E288f5aa3f23357278499,
+                req,
+                1000000000000000000
+            );
+        //        require(
+        //            LinkTokenInterface(chainlinkTokenAddress()).transferFrom(
+        //                msg.sender,
+        //                address(this),
+        //                fee_
+        //            ),
+        //            "transfer failed"
+        //        );
+        //        Chainlink.Request memory req = buildChainlinkRequest(
+        //            bytes32(bytes(truflationJobId)),
+        //            address(this),
+        //            this.fulfillTruflation.selector
+        //        );
+        //        req.add("service", service_);
+        //        req.add("data", data_);
+        //        req.add("keypath", keypath_);
+        //        req.add("abi", abi_);
+        //        req.add("multiplier", multiplier_);
+        //        req.add("refundTo", Strings.toHexString(uint160(msg.sender), 20));
+        //        return sendChainlinkRequestTo(truflationOracleId, req, fee_);
+        //        return 0;
     }
 
-    function fulfillTruflation(bytes32 _requestId, bytes memory bytesData)
+    function fulfillTruflation(bytes32 _requestId, string memory _info)
         public
         recordChainlinkFulfillment(_requestId)
     {
-        truflationResult = bytesData;
+        truflationResult = _info;
     }
 
+    function allowNfts(address nft_) public onlyOwner {
+        allowedNftContracts[nft_] = true;
+    }
+
+    function allowTokens(address token_) public onlyOwner {
+        allowedTokenContract = token_;
+    }
+
+    // This is done manually through the settings for now
+    // In the future, we would use Chainlink Keepers to update the loan amount bounds every hour or every day
     function setLoanAmountBounds(uint256 min, uint256 max) public onlyOwner {
         require(
             min < max,
@@ -117,14 +149,7 @@ contract Lender is ChainlinkClient, ConfirmedOwner {
     }
 
     function requestUpdateLoanConfig() public onlyOwner {
-        truflationDoTransferAndRequest(
-            "nft-index",
-            "",
-            "index",
-            "json",
-            "",
-            1000000000000000000
-        );
+        truflationDoRequest();
     }
 
     function calculateLoan(
@@ -135,6 +160,8 @@ contract Lender is ChainlinkClient, ConfirmedOwner {
         return (uint256(0), uint256(0));
     }
 
+    // Transfers an NFT from the message sender to the contract
+    // The contract transfers the loan amount over to the message sender and keeps track of the loan
     function depositNft721(address nftContract, uint256 tokenId) public {
         // Approve transferring on behalf of this contract and then transfer the token
         IERC721 nft = IERC721(nftContract);
@@ -168,5 +195,11 @@ contract Lender is ChainlinkClient, ConfirmedOwner {
             loans[msg.sender].nftContract,
             loans[msg.sender].tokenId
         );
+    }
+
+    function toInt256(bytes memory _bytes) public pure returns (int256 value) {
+        assembly {
+            value := mload(add(_bytes, 0x20))
+        }
     }
 }

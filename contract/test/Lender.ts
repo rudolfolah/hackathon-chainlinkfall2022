@@ -29,7 +29,7 @@ describe("Lender", function () {
     const [, , , truflationContractOwner] = await ethers.getSigners();
     // Mock Chainlink
     const MockChainlinkOracleFactory = await ethers.getContractFactory(
-      "MockChainlinkOracle"
+      "TestToken"
     );
     const mockChainlinkOracle = await MockChainlinkOracleFactory.connect(
       truflationContractOwner
@@ -37,7 +37,7 @@ describe("Lender", function () {
 
     // Mock Truflation Data Feed
     const MockTruflationDataFeedFactory = await ethers.getContractFactory(
-      "MockTruflationClient"
+      "TestToken"
     );
     const mockTruflationDataFeed = await MockTruflationDataFeedFactory.connect(
       truflationContractOwner
@@ -108,11 +108,25 @@ describe("Lender", function () {
     });
   });
 
-  describe("Chainlink Oracles Update Loan Configution", function () {
-    it("makes request to Truflation", async function () {
+  describe("Convert bytes result", function () {
+    it("works", async function () {
       const { lender, deployer, nft, nftContractOwner, ownerOfNft } =
         await loadFixture(deployLenderFixture);
-      await lender.requestUpdateLoanConfig();
+      expect(
+        await lender.toInt256("0x3135352e38373033343836383136323134")
+      ).to.equal(
+        ethers.utils.toUtf8Bytes(
+          '{"timestamp":"2022-11-05T18:10:26.880Z","index":156.69156080283352,"aDayChange":-1.0300078107719828,"aMonthChange":-8.100125327016434}'
+        )
+      );
     });
   });
+
+  // describe("Chainlink Oracles Update Loan Configution", function () {
+  //   it("makes request to Truflation", async function () {
+  //     const { lender, deployer, nft, nftContractOwner, ownerOfNft } =
+  //       await loadFixture(deployLenderFixture);
+  //     await lender.requestUpdateLoanConfig();
+  //   });
+  // });
 });

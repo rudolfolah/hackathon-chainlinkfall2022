@@ -182,6 +182,64 @@
     "inputs": [
       {
         "internalType": "address",
+        "name": "nft_",
+        "type": "address"
+      }
+    ],
+    "name": "allowNfts",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "token_",
+        "type": "address"
+      }
+    ],
+    "name": "allowTokens",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "allowedNftContracts",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "allowedTokenContract",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
         "name": "walletAddress",
         "type": "address"
       },
@@ -238,9 +296,9 @@
         "type": "bytes32"
       },
       {
-        "internalType": "bytes",
-        "name": "bytesData",
-        "type": "bytes"
+        "internalType": "string",
+        "name": "_info",
+        "type": "string"
       }
     ],
     "name": "fulfillTruflation",
@@ -264,6 +322,25 @@
   {
     "inputs": [],
     "name": "loanAmountMin",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "name": "numberOfUnpaidLoans",
     "outputs": [
       {
         "internalType": "uint256",
@@ -322,6 +399,25 @@
   {
     "inputs": [
       {
+        "internalType": "bytes",
+        "name": "_bytes",
+        "type": "bytes"
+      }
+    ],
+    "name": "toInt256",
+    "outputs": [
+      {
+        "internalType": "int256",
+        "name": "value",
+        "type": "int256"
+      }
+    ],
+    "stateMutability": "pure",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
         "internalType": "address",
         "name": "to",
         "type": "address"
@@ -333,39 +429,8 @@
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "internalType": "string",
-        "name": "service_",
-        "type": "string"
-      },
-      {
-        "internalType": "string",
-        "name": "data_",
-        "type": "string"
-      },
-      {
-        "internalType": "string",
-        "name": "keypath_",
-        "type": "string"
-      },
-      {
-        "internalType": "string",
-        "name": "abi_",
-        "type": "string"
-      },
-      {
-        "internalType": "string",
-        "name": "multiplier_",
-        "type": "string"
-      },
-      {
-        "internalType": "uint256",
-        "name": "fee_",
-        "type": "uint256"
-      }
-    ],
-    "name": "truflationDoTransferAndRequest",
+    "inputs": [],
+    "name": "truflationDoRequest",
     "outputs": [
       {
         "internalType": "bytes32",
@@ -407,9 +472,9 @@
     "name": "truflationResult",
     "outputs": [
       {
-        "internalType": "bytes",
+        "internalType": "string",
         "name": "",
-        "type": "bytes"
+        "type": "string"
       }
     ],
     "stateMutability": "view",
