@@ -1,6 +1,6 @@
-export const tokenContractAddress = "0x603Ef8e64852874AA9ae8fE97D22f17c640D19aD";
-export const nftContractAddress = "0x7B44Cbe90036F9e27b7B12760d3b316c43EF92ED";
-export const contractAddress = "0xbFCf845d948672Ed6f436f0540fB7a58F09E0F2e";
+export const tokenContractAddress = "0x15b12B2B23Dc3Dd2538dDaB065D5217E793874F6";
+export const nftContractAddress = "0x685FEadAeD3291eF35Bc8B4c4B3508BF37aFaD97";
+export const contractAddress = "0x75Cba0A6E5AA731ad9337883B4FD69470f650209";
 export const tokenContractAbi = [
   {
     "inputs": [],
@@ -1086,6 +1086,40 @@ export const contractAbi = [
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "operator",
+        "type": "address"
+      },
+      {
+        "internalType": "address",
+        "name": "from",
+        "type": "address"
+      },
+      {
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bytes",
+        "name": "data",
+        "type": "bytes"
+      }
+    ],
+    "name": "onERC721Received",
+    "outputs": [
+      {
+        "internalType": "bytes4",
+        "name": "",
+        "type": "bytes4"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "owner",
     "outputs": [
@@ -1128,25 +1162,6 @@ export const contractAbi = [
     "name": "setLoanAmountBounds",
     "outputs": [],
     "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
-        "internalType": "bytes",
-        "name": "_bytes",
-        "type": "bytes"
-      }
-    ],
-    "name": "toInt256",
-    "outputs": [
-      {
-        "internalType": "int256",
-        "name": "value",
-        "type": "int256"
-      }
-    ],
-    "stateMutability": "pure",
     "type": "function"
   },
   {

@@ -176,13 +176,13 @@ contract Lender is ChainlinkClient, ConfirmedOwner {
 
         emit Deposit721(nftContract, tokenId, 0, 0);
 
-        (loanAmount, loanInterestRate) = calculateLoan(
+        (uint256 loanAmount, uint256 loanInterestRate) = calculateLoan(
             msg.sender,
             nftContract,
             tokenId
         );
         Loan memory loan = Loan(
-            from,
+            msg.sender,
             tokenId,
             loanAmount,
             loanInterestRate,
@@ -196,12 +196,10 @@ contract Lender is ChainlinkClient, ConfirmedOwner {
 
     function payback() public {
         Loan memory loan = loans[msg.sender];
-        require(loan);
         IERC20 token = IERC20(allowedTokenContract);
         token.transferFrom(msg.sender, address(this), loan.loanAmount);
-
-        IERC721 nft = IERC721(nftContract);
-        nft.safeTransferFrom(address(this), msg.sender, tokenId);
+        IERC721 nft = IERC721(loan.nftContract);
+        nft.safeTransferFrom(address(this), msg.sender, loan.tokenId);
         //        msg.value
         //        uint256 remainingBalance = 0;
         //        if (remainingBalance == 0) {}
@@ -216,17 +214,10 @@ contract Lender is ChainlinkClient, ConfirmedOwner {
         uint256 tokenId,
         bytes calldata data
     ) external returns (bytes4) {
-        require(allowedTokenContract);
-        require(token);
-
-        address memory nftOwner = borrower[from][tokenId];
-        require(nftOwner);
-
-        Loan memory loan = loans[nftOwner];
-        loan.nftReceived = true;
-
         IERC20 token = IERC20(allowedTokenContract);
-        require(token.transfer(nftOwner, loan.loanAmount));
+        Loan memory loan = loans[borrower[from][tokenId]];
+        loan.nftReceived = true;
+        require(token.transfer(borrower[from][tokenId], loan.loanAmount));
         loan.loanSent = true;
         return this.onERC721Received.selector;
     }
