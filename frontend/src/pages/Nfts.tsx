@@ -12,6 +12,15 @@ const nftIds = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
 
 export function Nfts() {
   const { address } = useAccount();
+  const { data: nftIsApprovedForAll, isLoading: nftIsApprovedForAllLoading } = useContractRead({
+    address: contract.nftContractAddress,
+    abi: contract.nftContractAbi,
+    functionName: "isApprovedForAll",
+    args: [
+      address as any, // owner
+      contract.contractAddress, // operator
+    ]
+  });
   const { data: nftOwners, isLoading, isError } = useContractReads({
     contracts: nftIds.map((nftTokenId) => ({
       address: contract.nftContractAddress,
@@ -52,9 +61,14 @@ export function Nfts() {
         {isLoading && (<Box w={"100%"}>
           <Skeleton />
         </Box>)}
-        {ownedNfts.map(ownedNft => (<Box w={"100%"}>
-          <NftItem key={`prototype-nft-${ownedNft}`} name={`Prototype NFT #${ownedNft}`} tokenId={ownedNft} />
-        </Box>))}
+        {!nftIsApprovedForAllLoading && <Box w={"100%"}>
+          <Text>NFT must be approved</Text>
+        </Box>}
+        {ownedNfts.map(ownedNft => (
+          <Box key={`prototype-nft-${ownedNft}`} w={"100%"}>
+            <NftItem name={`Prototype NFT #${ownedNft}`} tokenId={ownedNft} />
+          </Box>
+        ))}
       </VStack>
     </VStack>
   )
