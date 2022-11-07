@@ -77,12 +77,12 @@ export function Nfts() {
         {isLoading && (<Box w={"100%"}>
           <Skeleton />
         </Box>)}
-        {!nftIsApprovedForAllLoading && <Box w={"100%"}>
+        {!nftIsApprovedForAll && <Box w={"100%"}>
           <Button onClick={() => contractWriteSetApprovalForAll?.()}>Approve All NFTs for Loans</Button>
         </Box>}
         {ownedNfts.map(ownedNft => (
           <Box key={`prototype-nft-${ownedNft}`} w={"100%"}>
-            <NftItem name={`Prototype NFT #${ownedNft}`} tokenId={ownedNft} />
+            <NftItem name={`Prototype NFT #${ownedNft}`} tokenId={ownedNft} enabled={nftIsApprovedForAll || setApprovalForAllIsSuccess} />
           </Box>
         ))}
       </VStack>

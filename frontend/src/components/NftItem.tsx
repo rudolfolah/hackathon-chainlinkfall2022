@@ -26,9 +26,10 @@ export interface LoanOption {
 export interface NftItemProps {
   name: string;
   tokenId: number;
+  enabled: boolean;
 }
 
-export function NftItem({ name, tokenId }: NftItemProps) {
+export function NftItem({ name, tokenId, enabled }: NftItemProps) {
   const [loanOptions, setLoanOptions] = useState<LoanOption[]>([
     { numDays: 7, amount: 1.25, rate: 5.25 },
     { numDays: 14, amount: 1.1, rate: 7.55 },
@@ -84,6 +85,7 @@ export function NftItem({ name, tokenId }: NftItemProps) {
                       bgGradient={index == 0 ? "linear(76.71deg, #FEE186 11.01%, #FCD456 31.68%, #FFEAA8 69.1%, #EFC235 97.65%)" : undefined}
                       variant={"outline"}
                       borderColor={"#aaa"}
+                      disabled={!enabled}
                       onClick={() => { contractWriteSetLoanAmountBounds?.(); }}
               >
                 {option.amount} ETH @ {option.rate}%
