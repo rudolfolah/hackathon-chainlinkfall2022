@@ -196,13 +196,17 @@ contract Lender is ChainlinkClient, ConfirmedOwner {
 
     function payback() public {
         Loan memory loan = loans[msg.sender];
-        // msg.value
-        uint256 remainingBalance = 0;
-        if (remainingBalance == 0) {}
-        emit Withdrawal(
-            loans[msg.sender].nftContract,
-            loans[msg.sender].tokenId
-        );
+        require(loan);
+        IERC20 token = IERC20(allowedTokenContract);
+        token.transferFrom(msg.sender, address(this), loan.loanAmount);
+
+        IERC721 nft = IERC721(nftContract);
+        nft.safeTransferFrom(address(this), msg.sender, tokenId);
+        //        msg.value
+        //        uint256 remainingBalance = 0;
+        //        if (remainingBalance == 0) {}
+        emit Withdrawal(loan.nftContract, loan.tokenId);
+        delete loans[msg.sender];
     }
 
     // When the NFT is received, transfer the token loan amount
