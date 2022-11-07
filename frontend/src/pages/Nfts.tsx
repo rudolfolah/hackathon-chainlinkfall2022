@@ -36,8 +36,6 @@ export function Nfts() {
 
     const owned = [];
     for (let i = 0; i < nftIds.length; i += 1) {
-      console.debug(nftOwners[i])
-      console.debug(address)
       if (nftOwners[i] == address as any) {
         owned.push(nftIds[i]);
       }
