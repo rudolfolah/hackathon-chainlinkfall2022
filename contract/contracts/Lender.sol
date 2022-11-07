@@ -157,7 +157,7 @@ contract Lender is ChainlinkClient, ConfirmedOwner {
         address nftContract,
         uint256 tokenId
     ) public view returns (uint256, uint256) {
-        return (uint256(0), uint256(0));
+        return (0.01 ether, uint256(10525));
     }
 
     // Transfers an NFT from the message sender to the contract
