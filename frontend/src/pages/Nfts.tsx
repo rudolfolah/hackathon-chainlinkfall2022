@@ -1,8 +1,8 @@
-import {Box, Divider, Skeleton, Text, VStack} from "@chakra-ui/react";
+import {Box, Button, Divider, Skeleton, Text, VStack} from "@chakra-ui/react";
 
 import {NftItem} from "../components/NftItem";
 import {PageHeader} from "../components/PageHeader";
-import {useAccount, useContractRead, useContractReads, useContractWrite} from "wagmi";
+import {useAccount, useContractRead, useContractReads, useContractWrite, usePrepareContractWrite} from "wagmi";
 import {useEffect, useState} from "react";
 import * as contract from "../contract"
 import {BigNumber} from "ethers";
@@ -29,6 +29,22 @@ export function Nfts() {
       args: [BigNumber.from(nftTokenId)],
     })),
   });
+
+  const { config: configContractWriteSetApprovalForAll } = usePrepareContractWrite({
+    address: contract.nftContractAddress,
+    abi: contract.nftContractAbi,
+    functionName: "setApprovalForAll",
+    args: [contract.contractAddress, true],
+    // overrides: {
+    //   gasLimit: BigNumber.from(200000),
+    // },
+  });
+  const {
+    data: setApprovalForAll,
+    isSuccess: setApprovalForAllIsSuccess,
+    isLoading: setApprovalForAllIsLoading,
+    write: contractWriteSetApprovalForAll
+  } = useContractWrite(configContractWriteSetApprovalForAll);
 
   const [ownedNfts, setOwnedNfts] = useState([]);
 
@@ -62,7 +78,7 @@ export function Nfts() {
           <Skeleton />
         </Box>)}
         {!nftIsApprovedForAllLoading && <Box w={"100%"}>
-          <Text>NFT must be approved</Text>
+          <Button onClick={() => contractWriteSetApprovalForAll?.()}>Approve All NFTs for Loans</Button>
         </Box>}
         {ownedNfts.map(ownedNft => (
           <Box key={`prototype-nft-${ownedNft}`} w={"100%"}>
