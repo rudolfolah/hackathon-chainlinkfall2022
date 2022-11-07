@@ -1,9 +1,15 @@
-export const tokenContractAddress = "0x15b12B2B23Dc3Dd2538dDaB065D5217E793874F6";
-export const nftContractAddress = "0x685FEadAeD3291eF35Bc8B4c4B3508BF37aFaD97";
-export const contractAddress = "0x75Cba0A6E5AA731ad9337883B4FD69470f650209";
+export const tokenContractAddress = "0x7430C2E6bc00A82ce1deb5D39D0E36659473c852";
+export const nftContractAddress = "0x3BB132162990639290bC656453023130d99b54d4";
+export const contractAddress = "0xA5375D38747E1C64a88d5895E86235c463d68F72";
 export const tokenContractAbi = [
   {
-    "inputs": [],
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "to",
+        "type": "address"
+      }
+    ],
     "stateMutability": "nonpayable",
     "type": "constructor"
   },

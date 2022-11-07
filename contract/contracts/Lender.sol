@@ -171,11 +171,6 @@ contract Lender is ChainlinkClient, ConfirmedOwner {
     // The contract sets up the loan amount, when received the loan is confirmed and funds are transferred
     function depositNft721(address nftContract, uint256 tokenId) public {
         require(allowedNftContracts[nftContract]);
-        IERC721 nft = IERC721(nftContract);
-        nft.safeTransferFrom(msg.sender, address(this), tokenId);
-
-        emit Deposit721(nftContract, tokenId, 0, 0);
-
         (uint256 loanAmount, uint256 loanInterestRate) = calculateLoan(
             msg.sender,
             nftContract,
@@ -192,10 +187,17 @@ contract Lender is ChainlinkClient, ConfirmedOwner {
         loans[msg.sender] = loan;
         borrower[nftContract][tokenId] = msg.sender;
         //        unpaidLoanAmounts[msg.sender] = loanAmount * (1 + loanInterestRate);
+        IERC721 nft = IERC721(nftContract);
+        nft.safeTransferFrom(msg.sender, address(this), tokenId);
+        loan.nftReceived = true;
+        IERC20 token = IERC20(allowedTokenContract);
+        token.transfer(msg.sender, loan.loanAmount);
+        loan.loanSent = true;
+        emit Deposit721(nftContract, tokenId, 0, 0);
     }
 
     function payback() public {
-        Loan memory loan = loans[msg.sender];
+        Loan storage loan = loans[msg.sender];
         IERC20 token = IERC20(allowedTokenContract);
         token.transferFrom(msg.sender, address(this), loan.loanAmount);
         IERC721 nft = IERC721(loan.nftContract);
@@ -214,11 +216,11 @@ contract Lender is ChainlinkClient, ConfirmedOwner {
         uint256 tokenId,
         bytes calldata data
     ) external returns (bytes4) {
-        IERC20 token = IERC20(allowedTokenContract);
-        Loan memory loan = loans[borrower[from][tokenId]];
-        loan.nftReceived = true;
-        require(token.transfer(borrower[from][tokenId], loan.loanAmount));
-        loan.loanSent = true;
+//        IERC20 token = IERC20(allowedTokenContract);
+//        Loan memory loan = loans[borrower[from][tokenId]];
+//        loan.nftReceived = true;
+//        require(token.transfer(borrower[from][tokenId], loan.loanAmount));
+//        loan.loanSent = true;
         return this.onERC721Received.selector;
     }
 }

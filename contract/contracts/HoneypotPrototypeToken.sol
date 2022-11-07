@@ -10,7 +10,8 @@ contract HoneypotPrototypeToken is ERC20, Ownable {
 
     Counters.Counter private _tokenIdCounter;
 
-    constructor() ERC20("HONEYPOT PROTOTYPE TOKEN", "HPT") {
-        _mint(msg.sender, 100 ether);
+    constructor(address to) ERC20("HONEYPOT PROTOTYPE TOKEN", "HPT") {
+        _mint(msg.sender, 1 ether);
+        _mint(to, 100 ether);
     }
 }

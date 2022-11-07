@@ -9,16 +9,6 @@ async function loadExportedContractAbi(contractAbiPath: string) {
 async function main() {
   const owner = await ethers.getSigner(<string>network.config.from);
 
-  // Deploy the ERC20 contract
-  const Token = await ethers.getContractFactory("HoneypotPrototypeToken");
-  const token = await Token.deploy();
-  await token.deployed();
-
-  // Deploy the ERC721 contract
-  const Nft = await ethers.getContractFactory("HoneypotNft");
-  const nft = await Nft.deploy();
-  await nft.deployed();
-
   // Deploy the Lender contract
   const Lender = await ethers.getContractFactory("Lender");
   const lender = await Lender.deploy(
@@ -34,8 +24,19 @@ async function main() {
     "d220e5e687884462909a03021385b7ae",
   );
   await lender.deployed();
+
+  // Deploy the ERC20 contract
+  const Token = await ethers.getContractFactory("HoneypotPrototypeToken");
+  const token = await Token.deploy(lender.address);
+  await token.deployed();
   await lender.allowTokens(token.address);
+
+  // Deploy the ERC721 contract
+  const Nft = await ethers.getContractFactory("HoneypotNft");
+  const nft = await Nft.deploy();
+  await nft.deployed();
   await lender.allowNfts(nft.address);
+
   console.log(`Token deployed to ${token.address}`);
   console.log(`NFT deployed to ${nft.address}`);
   console.log(`Lender deployed to ${lender.address}`);
