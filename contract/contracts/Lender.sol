@@ -5,7 +5,9 @@ import "@chainlink/contracts/src/v0.8/ChainlinkClient.sol";
 import "@chainlink/contracts/src/v0.8/ConfirmedOwner.sol";
 import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
+import "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol";
 
 contract Lender is ChainlinkClient, ConfirmedOwner {
     using Chainlink for Chainlink.Request;
@@ -23,6 +25,8 @@ contract Lender is ChainlinkClient, ConfirmedOwner {
         uint256 tokenId;
         uint256 loanAmount;
         uint256 loanInterestRate;
+        bool nftReceived;
+        bool loanSent;
     }
 
     // The upper bound on any individual loan amount
@@ -33,6 +37,9 @@ contract Lender is ChainlinkClient, ConfirmedOwner {
 
     // Each wallet can have one loan at a time
     mapping(address => Loan) private loans;
+
+    // The mapping of nft contract and token ids to a wallet address that has the loan
+    mapping(address => mapping(uint256 => address)) private borrower;
 
     // The total of unpaid loans
     mapping(address => uint256) public unpaidLoanAmounts;
@@ -161,29 +168,30 @@ contract Lender is ChainlinkClient, ConfirmedOwner {
     }
 
     // Transfers an NFT from the message sender to the contract
-    // The contract transfers the loan amount over to the message sender and keeps track of the loan
+    // The contract sets up the loan amount, when received the loan is confirmed and funds are transferred
     function depositNft721(address nftContract, uint256 tokenId) public {
-        // Approve transferring on behalf of this contract and then transfer the token
+        require(allowedNftContracts[nftContract]);
         IERC721 nft = IERC721(nftContract);
-        nft.approve(address(this), tokenId);
         nft.safeTransferFrom(msg.sender, address(this), tokenId);
 
         emit Deposit721(nftContract, tokenId, 0, 0);
-        uint256 loanAmount;
-        uint256 loanInterestRate;
+
         (loanAmount, loanInterestRate) = calculateLoan(
             msg.sender,
             nftContract,
             tokenId
         );
         Loan memory loan = Loan(
-            nftContract,
+            from,
             tokenId,
             loanAmount,
-            loanInterestRate
+            loanInterestRate,
+            false,
+            false
         );
         loans[msg.sender] = loan;
-        unpaidLoanAmounts[msg.sender] = loanAmount * (1 + loanInterestRate);
+        borrower[nftContract][tokenId] = msg.sender;
+        //        unpaidLoanAmounts[msg.sender] = loanAmount * (1 + loanInterestRate);
     }
 
     function payback() public {
@@ -195,5 +203,27 @@ contract Lender is ChainlinkClient, ConfirmedOwner {
             loans[msg.sender].nftContract,
             loans[msg.sender].tokenId
         );
+    }
+
+    // When the NFT is received, transfer the token loan amount
+    function onERC721Received(
+        address operator,
+        address from,
+        uint256 tokenId,
+        bytes calldata data
+    ) external returns (bytes4) {
+        require(allowedTokenContract);
+        require(token);
+
+        address memory nftOwner = borrower[from][tokenId];
+        require(nftOwner);
+
+        Loan memory loan = loans[nftOwner];
+        loan.nftReceived = true;
+
+        IERC20 token = IERC20(allowedTokenContract);
+        require(token.transfer(nftOwner, loan.loanAmount));
+        loan.loanSent = true;
+        return this.onERC721Received.selector;
     }
 }
