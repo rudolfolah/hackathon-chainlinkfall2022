@@ -89,7 +89,7 @@ contract Lender is ChainlinkClient, ConfirmedOwner {
         req.add("data", '{"index":"nft/top11"}');
         req.add("keypath", "index");
         req.add("abi", "json");
-        req.add("multiplier", "");
+        req.add("multiplier", "100");
         req.add("refundTo", Strings.toHexString(uint160(msg.sender), 20));
         return
             sendChainlinkRequestTo(
