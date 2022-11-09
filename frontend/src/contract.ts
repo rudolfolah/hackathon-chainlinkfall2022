@@ -1,6 +1,6 @@
-export const tokenContractAddress = "0x7430C2E6bc00A82ce1deb5D39D0E36659473c852";
-export const nftContractAddress = "0x3BB132162990639290bC656453023130d99b54d4";
-export const contractAddress = "0xA5375D38747E1C64a88d5895E86235c463d68F72";
+export const tokenContractAddress = "0x2b207D5d4AA81Cd6acc0B32B2dE8Abf5CeA3aFEC";
+export const nftContractAddress = "0xA5EE4878553D561f705D7868f88d50711A206B4B";
+export const contractAddress = "0xFa47c09A3a4269e8103A1bC3A67E4b7306dBF780";
 export const tokenContractAbi = [
   {
     "inputs": [
@@ -1036,6 +1036,24 @@ export const contractAbi = [
         "type": "bytes32"
       },
       {
+        "internalType": "uint256",
+        "name": "_info",
+        "type": "uint256"
+      }
+    ],
+    "name": "fulfillRisk",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "_requestId",
+        "type": "bytes32"
+      },
+      {
         "internalType": "string",
         "name": "_info",
         "type": "string"
@@ -1149,6 +1167,32 @@ export const contractAbi = [
     "inputs": [],
     "name": "requestUpdateLoanConfig",
     "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "riskResult",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "riskoracleDoRequest",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "requestId",
+        "type": "bytes32"
+      }
+    ],
     "stateMutability": "nonpayable",
     "type": "function"
   },

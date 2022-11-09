@@ -296,6 +296,24 @@
         "type": "bytes32"
       },
       {
+        "internalType": "uint256",
+        "name": "_info",
+        "type": "uint256"
+      }
+    ],
+    "name": "fulfillRisk",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "_requestId",
+        "type": "bytes32"
+      },
+      {
         "internalType": "string",
         "name": "_info",
         "type": "string"
@@ -409,6 +427,32 @@
     "inputs": [],
     "name": "requestUpdateLoanConfig",
     "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "riskResult",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "riskoracleDoRequest",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "requestId",
+        "type": "bytes32"
+      }
+    ],
     "stateMutability": "nonpayable",
     "type": "function"
   },

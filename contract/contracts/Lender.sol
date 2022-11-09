@@ -20,6 +20,8 @@ contract Lender is ChainlinkClient, ConfirmedOwner {
     string public truflationJobId;
     string public truflationResult;
 
+    uint256 public riskResult;
+
     struct Loan {
         address nftContract;
         uint256 tokenId;
@@ -74,6 +76,7 @@ contract Lender is ChainlinkClient, ConfirmedOwner {
         setChainlinkOracle(chainlinkOracle_);
         truflationOracleId = truflationOracleId_;
         truflationJobId = truflationJobId_;
+        truflationResult = "1";
 
         loanAmountMin = 0.01 ether;
         loanAmountMax = 5 ether;
@@ -127,6 +130,33 @@ contract Lender is ChainlinkClient, ConfirmedOwner {
         truflationResult = _info;
     }
 
+    function riskoracleDoRequest() public returns (bytes32 requestId) {
+        Chainlink.Request memory req = buildChainlinkRequest(
+            "ca98366cc7314957b8c012c72f05aeeb",
+            address(this),
+            this.fulfillRisk.selector
+        );
+        req.add(
+            "get",
+            "https://min-api.cryptocompare.com/data/pricemultifull?fsyms=ETH&tsyms=USD"
+        );
+        req.add("path", "VOLUME24HOUR");
+        req.addInt("times", 10**18);
+        return
+            sendChainlinkRequestTo(
+                0x40193c8518BB267228Fc409a613bDbD8eC5a97b3,
+                req,
+                1000000000000000000
+            );
+    }
+
+    function fulfillRisk(bytes32 _requestId, uint256 _info)
+        public
+        recordChainlinkFulfillment(_requestId)
+    {
+        riskResult = _info;
+    }
+
     function allowNfts(address nft_) public onlyOwner {
         allowedNftContracts[nft_] = true;
     }
@@ -156,6 +186,7 @@ contract Lender is ChainlinkClient, ConfirmedOwner {
     }
 
     function requestUpdateLoanConfig() public onlyOwner {
+        riskoracleDoRequest();
         truflationDoRequest();
     }
 
@@ -186,7 +217,7 @@ contract Lender is ChainlinkClient, ConfirmedOwner {
         );
         loans[msg.sender] = loan;
         borrower[nftContract][tokenId] = msg.sender;
-        //        unpaidLoanAmounts[msg.sender] = loanAmount * (1 + loanInterestRate);
+        unpaidLoanAmounts[msg.sender] = loanAmount;
         IERC721 nft = IERC721(nftContract);
         nft.safeTransferFrom(msg.sender, address(this), tokenId);
         loan.nftReceived = true;
@@ -202,6 +233,7 @@ contract Lender is ChainlinkClient, ConfirmedOwner {
         token.transferFrom(msg.sender, address(this), loan.loanAmount);
         IERC721 nft = IERC721(loan.nftContract);
         nft.safeTransferFrom(address(this), msg.sender, loan.tokenId);
+        unpaidLoanAmounts[msg.sender] = 0;
         //        msg.value
         //        uint256 remainingBalance = 0;
         //        if (remainingBalance == 0) {}
@@ -216,11 +248,11 @@ contract Lender is ChainlinkClient, ConfirmedOwner {
         uint256 tokenId,
         bytes calldata data
     ) external returns (bytes4) {
-//        IERC20 token = IERC20(allowedTokenContract);
-//        Loan memory loan = loans[borrower[from][tokenId]];
-//        loan.nftReceived = true;
-//        require(token.transfer(borrower[from][tokenId], loan.loanAmount));
-//        loan.loanSent = true;
+        //        IERC20 token = IERC20(allowedTokenContract);
+        //        Loan memory loan = loans[borrower[from][tokenId]];
+        //        loan.nftReceived = true;
+        //        require(token.transfer(borrower[from][tokenId], loan.loanAmount));
+        //        loan.loanSent = true;
         return this.onERC721Received.selector;
     }
 }
