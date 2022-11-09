@@ -135,6 +135,7 @@ export function Nfts() {
   };
   const approveForAll = () => { contractWriteSetApprovalForAll?.(); };
   const depositNft = () => { contractWriteSetLoanAmountBounds?.(); };
+  const acceptLoan = () => { depositNft(); closeModal(); };
 
   return (
     <>
@@ -142,7 +143,7 @@ export function Nfts() {
         nft={state.modalNft}
         isOpen={state.modalOpen}
         onClose={closeModal}
-        onSubmit={depositNft}
+        onSubmit={acceptLoan}
       />
       <VStack>
         <PageHeader title={"NFTs"}>
