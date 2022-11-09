@@ -1,8 +1,8 @@
-import { Box, HStack, VStack, Flex, Button, Text, Heading, Spinner, SkeletonText, Skeleton, Stat, StatNumber, StatLabel} from "@chakra-ui/react";
-import {PageHeader} from "../components/PageHeader";
-import {Icon, WarningTwoIcon} from "@chakra-ui/icons";
-import {Loan, LoanItem} from "../components/LoanItem";
 import {useState} from "react";
+import { Box, HStack, VStack, Flex, Button, Text, Heading, Spinner, SkeletonText, Skeleton, Stat, StatNumber, StatLabel} from "@chakra-ui/react";
+import {Icon, WarningTwoIcon} from "@chakra-ui/icons";
+import {PageHeader} from "../components/PageHeader";
+import {Loan, LoanItem} from "../components/LoanItem";
 
 
 export function Loans() {

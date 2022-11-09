@@ -9,7 +9,7 @@ import {
   Text,
   Heading,
   Spacer,
-  Image
+  Image, useDisclosure
 } from "@chakra-ui/react";
 import {PlusSquareIcon} from "@chakra-ui/icons";
 import {useEffect, useState} from "react";
@@ -27,35 +27,16 @@ export interface NftItemProps {
   name: string;
   tokenId: number;
   enabled: boolean;
+  onClick: () => void;
 }
 
-export function NftItem({ name, tokenId, enabled }: NftItemProps) {
+export function NftItem({ name, tokenId, enabled, onClick }: NftItemProps) {
   const [loanOptions, setLoanOptions] = useState<LoanOption[]>([
     { numDays: 7, amount: 1.25, rate: 5.25 },
     { numDays: 14, amount: 1.1, rate: 7.55 },
     { numDays: 21, amount: 1, rate: 12.25 },
   ]);
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-  const close = () => setIsOpen(false);
-  const open = () => setIsOpen(true);
-
-  const { config: configContractWriteSetLoanAmountBounds } = usePrepareContractWrite({
-    address: contractAddress,
-    abi: contractAbi,
-    functionName: "depositNft721",
-    args: [nftContractAddress, BigNumber.from(tokenId)],
-    // functionName: "requestUpdateLoanConfig",
-    // args: [BigNumber.from(4), BigNumber.from(10)],
-    overrides: {
-      gasLimit: BigNumber.from(200000),
-    },
-  });
-  const {
-    data: setLoanAmountBoundsData,
-    isSuccess: setLoanAmountBoundsIsSuccess,
-    isLoading: setLoanAmountBoundsIsLoading,
-    write: contractWriteSetLoanAmountBounds
-  } = useContractWrite(configContractWriteSetLoanAmountBounds);
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <VStack alignItems={"normal"}
@@ -63,13 +44,13 @@ export function NftItem({ name, tokenId, enabled }: NftItemProps) {
             bgGradient={isOpen ? "linear(102.8deg, #FFFBE8 23.81%, #FFE8E1 90.06%)" : undefined}
     >
       <Flex py={1} mb={2}>
-        <Box flex={"2"} flexBasis={"50%"} onClick={isOpen ? close : open}>
+        <Box flex={"2"} flexBasis={"50%"} onClick={isOpen ? onClose : onOpen}>
           <Heading as={"h4"} size={"md"} textAlign={"left"}>{name}</Heading>
           <Image boxSize={isOpen ? "100%" : "60%"} fit={"contain"} src={`/images/nft-example-${tokenId}.png`} />
         </Box>
         <Spacer />
         <Box>
-          {isOpen ? <CloseButton onClick={close} /> : <IconButton aria-label={"open"} icon={<PlusSquareIcon onClick={open} />} variant={"ghost"} />}
+          {isOpen ? <CloseButton onClick={onClose} /> : <IconButton aria-label={"open"} icon={<PlusSquareIcon onClick={onOpen} />} variant={"ghost"} />}
         </Box>
       </Flex>
       <Collapse in={isOpen} animateOpacity>
@@ -86,12 +67,10 @@ export function NftItem({ name, tokenId, enabled }: NftItemProps) {
                       variant={"outline"}
                       borderColor={"#aaa"}
                       disabled={!enabled}
-                      onClick={() => { contractWriteSetLoanAmountBounds?.(); }}
+                      onClick={onClick}
               >
                 {option.amount} ETH @ {option.rate}%
               </Button>
-              {setLoanAmountBoundsIsSuccess}
-              {setLoanAmountBoundsIsLoading}
             </Box>
           </Flex>
         ))}

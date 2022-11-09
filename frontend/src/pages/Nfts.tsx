@@ -3,14 +3,48 @@ import {Box, Button, Divider, Skeleton, Text, VStack} from "@chakra-ui/react";
 import {NftItem} from "../components/NftItem";
 import {PageHeader} from "../components/PageHeader";
 import {useAccount, useContractRead, useContractReads, useContractWrite, usePrepareContractWrite} from "wagmi";
-import {useEffect, useState} from "react";
+import {useEffect, useState, useReducer} from "react";
 import * as contract from "../contract"
 import {BigNumber} from "ethers";
+import {AcceptLoanModal} from "../components/AcceptLoanModal";
+import {contractAbi, contractAddress, nftContractAddress} from "../contract";
 
 
 const nftIds = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
 
+interface NftsState {
+  modalOpen: boolean;
+  modalNft: null | Object;
+  ownedNfts: Object[];
+}
+
+const initialState: NftsState = {
+  modalOpen: false,
+  modalNft: null,
+  ownedNfts: [],
+};
+
+enum Action {
+  OpenModal,
+  CloseModal,
+  UpdateOwnedNfts,
+};
+
+function reducer(state: NftsState, action: { type: Action, payload?: any }) {
+  switch (action.type) {
+    case Action.UpdateOwnedNfts:
+      return { ...state, ownedNfts: [...action.payload]};
+    case Action.OpenModal:
+      return { ...state, modalOpen: true, modalNft: action.payload };
+    case Action.CloseModal:
+      return { ...state, modalOpen: false, modalNft: null };
+    default:
+      return state;
+  }
+}
+
 export function Nfts() {
+  const [state, dispatch] = useReducer(reducer, initialState);
   const { address } = useAccount();
   const { data: nftIsApprovedForAll, isLoading: nftIsApprovedForAllLoading } = useContractRead({
     address: contract.nftContractAddress,
@@ -46,16 +80,32 @@ export function Nfts() {
     write: contractWriteSetApprovalForAll
   } = useContractWrite(configContractWriteSetApprovalForAll);
 
-  const [ownedNfts, setOwnedNfts] = useState([]);
+  const { config: configContractWriteSetLoanAmountBounds } = usePrepareContractWrite({
+    address: contractAddress,
+    abi: contractAbi,
+    functionName: "depositNft721",
+    args: [nftContractAddress, BigNumber.from((state.modalNft?.tokenId ?? "-1").toString())],
+    // functionName: "requestUpdateLoanConfig",
+    // args: [BigNumber.from(4), BigNumber.from(10)],
+    overrides: {
+      gasLimit: BigNumber.from(200000),
+    },
+  });
+  const {
+    data: setLoanAmountBoundsData,
+    isSuccess: setLoanAmountBoundsIsSuccess,
+    isLoading: setLoanAmountBoundsIsLoading,
+    write: contractWriteSetLoanAmountBounds
+  } = useContractWrite(configContractWriteSetLoanAmountBounds);
 
   useEffect(() => {
     if (isLoading || !nftOwners) {
-      setOwnedNfts([]);
+      dispatch({ type: Action.UpdateOwnedNfts, payload: [] });
       return;
     }
 
     if (isError) {
-      setOwnedNfts([]);
+      dispatch({ type: Action.UpdateOwnedNfts, payload: [] });
       console.error("Error");
     }
 
@@ -65,27 +115,58 @@ export function Nfts() {
         owned.push(nftIds[i]);
       }
     }
-    setOwnedNfts(owned as any);
+    dispatch({ type: Action.UpdateOwnedNfts, payload: owned });
   }, [nftOwners, isLoading, isError]);
 
+  const closeModal = () => { dispatch({ type: Action.CloseModal }); };
+  const openModal = (ownedNft: any) => {
+    return () => {
+      dispatch({
+        type: Action.OpenModal,
+        payload: {
+          name: `Prototype NFT #${ownedNft}`,
+          tokenId: ownedNft,
+          numDays: 7,
+          loanAmount: "1 ETH",
+          loanRate: "5.25%",
+        },
+      });
+    };
+  };
+  const approveForAll = () => { contractWriteSetApprovalForAll?.(); };
+  const depositNft = () => { contractWriteSetLoanAmountBounds?.(); };
+
   return (
-    <VStack>
-      <PageHeader title={"NFTs"}>
-        <Text>Select an NFT and deposit it. After depositing you will receive the loan amount.</Text>
-      </PageHeader>
-      <VStack divider={<Divider borderColor={"gray.400"}/>} spacing={0} w={"100%"}>
-        {isLoading && (<Box w={"100%"}>
-          <Skeleton />
-        </Box>)}
-        {!nftIsApprovedForAll && <Box w={"100%"}>
-          <Button onClick={() => contractWriteSetApprovalForAll?.()}>Approve All NFTs for Loans</Button>
-        </Box>}
-        {ownedNfts.map(ownedNft => (
-          <Box key={`prototype-nft-${ownedNft}`} w={"100%"}>
-            <NftItem name={`Prototype NFT #${ownedNft}`} tokenId={ownedNft} enabled={nftIsApprovedForAll || setApprovalForAllIsSuccess} />
-          </Box>
-        ))}
+    <>
+      <AcceptLoanModal
+        nft={state.modalNft}
+        isOpen={state.modalOpen}
+        onClose={closeModal}
+        onSubmit={depositNft}
+      />
+      <VStack>
+        <PageHeader title={"NFTs"}>
+          <Text>Select an NFT and deposit it. After depositing you will receive the loan amount.</Text>
+        </PageHeader>
+        <VStack divider={<Divider borderColor={"gray.400"}/>} spacing={0} w={"100%"}>
+          {isLoading && (<Box w={"100%"}>
+            <Skeleton />
+          </Box>)}
+          {!nftIsApprovedForAll && <Box w={"100%"}>
+            <Button onClick={approveForAll}>Approve All NFTs for Loans</Button>
+          </Box>}
+          {state.ownedNfts.map(ownedNft => (
+            <Box key={`prototype-nft-${ownedNft}`} w={"100%"}>
+              <NftItem
+                name={`Prototype NFT #${ownedNft}`}
+                tokenId={ownedNft}
+                enabled={nftIsApprovedForAll || setApprovalForAllIsSuccess}
+                onClick={openModal(ownedNft)}
+              />
+            </Box>
+          ))}
+        </VStack>
       </VStack>
-    </VStack>
+    </>
   )
 }

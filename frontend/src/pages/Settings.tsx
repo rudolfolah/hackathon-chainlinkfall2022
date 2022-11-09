@@ -1,8 +1,9 @@
-import {useAccount, useContractRead} from "wagmi";
-import {Box, Divider, Heading, SkeletonText, Text, VStack} from "@chakra-ui/react";
+import {useAccount, useContractRead, useContractWrite, usePrepareContractWrite} from "wagmi";
+import {Box, Button, Divider, Heading, SkeletonText, Text, VStack} from "@chakra-ui/react";
 import { BarChart, XAxis, YAxis, Bar, Tooltip } from "recharts";
 import React from "react";
 import * as contract from "../contract";
+import {BigNumber} from "ethers";
 
 export function Settings() {
   const { address } = useAccount();
@@ -21,6 +22,30 @@ export function Settings() {
     functionName: "balanceOf",
     args: [owner],
   });
+
+  const { data: truflationIndexValue, isLoading: truflationIndexValueLoading } = useContractRead({
+    address: contract.contractAddress,
+    abi: contract.contractAbi,
+    functionName: "truflationResult",
+  });
+
+  const { data: riskIndexValue, isLoading: riskIndexValueLoading } = useContractRead({
+    address: contract.contractAddress,
+    abi: contract.contractAbi,
+    functionName: "riskResult",
+  });
+
+  const { config: configContractWriteRequestUpdateLoanConfig } = usePrepareContractWrite({
+    address: contract.contractAddress,
+    abi: contract.contractAbi,
+    functionName: "requestUpdateLoanConfig",
+    overrides: {
+      gasLimit: BigNumber.from(200000),
+    },
+  });
+  const {
+    write: contractWriteRequestUpdateLoanConfig
+  } = useContractWrite(configContractWriteRequestUpdateLoanConfig);
 
   const calculateLoan = (nftIndexValue: number) => {
     let rateMin, rateMax, amountMin, amountMax;
@@ -75,6 +100,11 @@ export function Settings() {
         <Text>
           {nftBalanceLoading ? <SkeletonText /> : `Owns ${nftBalance?.toString()} Honeypot Prototype NFTs`}
         </Text>
+      </Box>
+      <Box>
+        {!truflationIndexValueLoading && truflationIndexValue && truflationIndexValue.length > 0 && <Text>{BigNumber.from(truflationIndexValue).toString()}</Text>}
+        <Text>{`Update Loan Configuration From Truflation NFT Index: ${truflationIndexValue} ${riskIndexValue}`}</Text>
+        <Button onClick={() => contractWriteRequestUpdateLoanConfig?.()}>Update</Button>
       </Box>
       <Box>
         <Heading>Loan Interest Rate Range based on NFT Index Value</Heading>
