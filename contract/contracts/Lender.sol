@@ -100,27 +100,6 @@ contract Lender is ChainlinkClient, ConfirmedOwner {
                 req,
                 1000000000000000000
             );
-        //        require(
-        //            LinkTokenInterface(chainlinkTokenAddress()).transferFrom(
-        //                msg.sender,
-        //                address(this),
-        //                fee_
-        //            ),
-        //            "transfer failed"
-        //        );
-        //        Chainlink.Request memory req = buildChainlinkRequest(
-        //            bytes32(bytes(truflationJobId)),
-        //            address(this),
-        //            this.fulfillTruflation.selector
-        //        );
-        //        req.add("service", service_);
-        //        req.add("data", data_);
-        //        req.add("keypath", keypath_);
-        //        req.add("abi", abi_);
-        //        req.add("multiplier", multiplier_);
-        //        req.add("refundTo", Strings.toHexString(uint160(msg.sender), 20));
-        //        return sendChainlinkRequestTo(truflationOracleId, req, fee_);
-        //        return 0;
     }
 
     function fulfillTruflation(bytes32 _requestId, string memory _info)
