@@ -45,7 +45,7 @@ export default function App() {
 
   return (
     <WagmiConfig client={client}>
-      <Flex className={"App--nav"} p={2}>
+      <Box className={"App--nav"} p={2}>
         <Box>
           HONEYPOT
         </Box>
@@ -54,7 +54,7 @@ export default function App() {
           <NavButton icon={<RiAppleFill />}>Download on iOS</NavButton>
           <NavButton icon={<RiGooglePlayFill />}>Download on Google Play</NavButton>
         </Box>
-      </Flex>
+      </Box>
       <Center className={"App--container"}>
         <Box className={"App--marketing"}>
           <Heading as={"h1"}>HONEYPOT</Heading>

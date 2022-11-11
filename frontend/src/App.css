@@ -9,8 +9,11 @@
 }
 
 .App--container {
+    width: 375px;
+    height: 812px;
 }
 
+.App--nav,
 .App--marketing {
     display: none;
 }
@@ -18,13 +21,17 @@
 .App--phone-container {
     width: 100%;
     height: 100%;
-    padding: 12px;
-    border: 1px solid black;
 }
 
 @media (min-width: 600px) {
     .App--container {
     }
+
+    .App--nav {
+        display: flex;
+        padding: 2rem;
+    }
+
     .App--marketing {
         display: block;
         margin: 12px;
@@ -36,5 +43,6 @@
         height: 812px;
         margin: 12px;
         padding: 36px;
+        border: 1px solid black;
     }
 }
