@@ -25,6 +25,8 @@
 
 @media (min-width: 600px) {
     .App--container {
+        width: auto;
+        height: auto;
     }
 
     .App--nav {
