@@ -20,7 +20,7 @@ contract Lender is ChainlinkClient, ConfirmedOwner {
     string public truflationJobId;
     string public truflationResult;
 
-    uint256 public riskResult;
+    string public riskResult;
 
     struct Loan {
         address nftContract;
@@ -84,7 +84,7 @@ contract Lender is ChainlinkClient, ConfirmedOwner {
 
     function truflationDoRequest() public returns (bytes32 requestId) {
         Chainlink.Request memory req = buildChainlinkRequest(
-            bytes32(bytes("d220e5e687884462909a03021385b7ae")),
+            bytes32(bytes(truflationJobId)),
             address(this),
             this.fulfillTruflation.selector
         );
@@ -96,7 +96,7 @@ contract Lender is ChainlinkClient, ConfirmedOwner {
         req.add("refundTo", Strings.toHexString(uint160(msg.sender), 20));
         return
             sendChainlinkRequestTo(
-                0x6D141Cf6C43f7eABF94E288f5aa3f23357278499,
+                truflationOracleId,
                 req,
                 1000000000000000000
             );
@@ -111,25 +111,19 @@ contract Lender is ChainlinkClient, ConfirmedOwner {
 
     function riskoracleDoRequest() public returns (bytes32 requestId) {
         Chainlink.Request memory req = buildChainlinkRequest(
-            "ca98366cc7314957b8c012c72f05aeeb",
+            bytes32(bytes("7d80a6386ef543a3abb52817f6707e3b")),
             address(this),
             this.fulfillRisk.selector
         );
         req.add(
             "get",
-            "https://min-api.cryptocompare.com/data/pricemultifull?fsyms=ETH&tsyms=USD"
+            "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&per_page=10"
         );
-        req.add("path", "VOLUME24HOUR");
-        req.addInt("times", 10**18);
-        return
-            sendChainlinkRequestTo(
-                0x40193c8518BB267228Fc409a613bDbD8eC5a97b3,
-                req,
-                1000000000000000000
-            );
+        req.add("path", "0,id");
+        return sendChainlinkRequest(req, 1000000000000000000);
     }
 
-    function fulfillRisk(bytes32 _requestId, uint256 _info)
+    function fulfillRisk(bytes32 _requestId, string memory _info)
         public
         recordChainlinkFulfillment(_requestId)
     {

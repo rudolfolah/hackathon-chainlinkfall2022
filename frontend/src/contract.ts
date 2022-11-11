@@ -1,6 +1,6 @@
-export const tokenContractAddress = "0x2b207D5d4AA81Cd6acc0B32B2dE8Abf5CeA3aFEC";
-export const nftContractAddress = "0xA5EE4878553D561f705D7868f88d50711A206B4B";
-export const contractAddress = "0xFa47c09A3a4269e8103A1bC3A67E4b7306dBF780";
+export const tokenContractAddress = "0x0Af91C503261Cc3158309Bf0bE743B02C3483227";
+export const nftContractAddress = "0xB0a4E815af29468425ABAAD2A494903a43FCdF05";
+export const contractAddress = "0xcA4DaF627BB90Adf322B616D36654A375592AaFd";
 export const tokenContractAbi = [
   {
     "inputs": [
@@ -1036,9 +1036,9 @@ export const contractAbi = [
         "type": "bytes32"
       },
       {
-        "internalType": "uint256",
+        "internalType": "string",
         "name": "_info",
-        "type": "uint256"
+        "type": "string"
       }
     ],
     "name": "fulfillRisk",
@@ -1175,9 +1175,9 @@ export const contractAbi = [
     "name": "riskResult",
     "outputs": [
       {
-        "internalType": "uint256",
+        "internalType": "string",
         "name": "",
-        "type": "uint256"
+        "type": "string"
       }
     ],
     "stateMutability": "view",

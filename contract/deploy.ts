@@ -17,11 +17,12 @@ async function main() {
     "0x326C977E6efc84E512bB9C30f76E30c160eD06FB",
     // chainlink oracle
     // https://docs.chain.link/docs/any-api/testnet-oracles/
-    "0x40193c8518BB267228Fc409a613bDbD8eC5a97b3",
+    "0x40193c8518BB267228Fc409a613bDbD8eC5a97b3", // <-- from the docs on chainlink
+    // "0xCC79157eb46F5624204f47AB42b3906cAA40eaB7", // <-- deployed through naas.io
     // truflation oracle id
-    "0x6D141Cf6C43f7eABF94E288f5aa3f23357278499",
+    "0x17dED59fCd940F0a40462D52AAcD11493C6D8073",
     // truflation job id
-    "d220e5e687884462909a03021385b7ae",
+    "8b459447262a4ccf8863962e073576d9",
   );
   await lender.deployed();
 
