@@ -4,7 +4,6 @@ import {RiAlertFill} from "react-icons/ri";
 import {PageHeader} from "../components/PageHeader";
 import {Loan, LoanItem} from "../components/LoanItem";
 
-
 export function Loans() {
   const [loans, setLoans] = useState<Loan[]>([
     {nftName: "Amazing 1", rate: 5.25, amount: 1.23, unpaidAmount: 0.23, paidAmount: 1.0, numDays: 7, daysRemaining: 3 },
