@@ -31,7 +31,6 @@
 
     .App--nav {
         display: flex;
-        padding: 2rem;
     }
 
     .App--marketing {
@@ -46,5 +45,7 @@
         margin: 12px;
         padding: 36px;
         border: 1px solid black;
+        overflow: scroll;
+        cursor: cell;
     }
 }
