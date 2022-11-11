@@ -1,7 +1,8 @@
 import React from "react";
-import {Box, Divider, Heading, Image, VStack} from "@chakra-ui/react";
+import {Box, Divider, Heading, Image, VStack, Text, Icon} from "@chakra-ui/react";
 import {useAccount, useConnect} from "wagmi";
 import {InjectedConnector} from "wagmi/connectors/injected";
+import {RiShieldCheckLine, RiGooglePlayFill, RiShieldCheckFill} from "react-icons/ri";
 import {ConnectToWalletButton} from "../components/ConnectToWalletButton";
 
 
@@ -11,20 +12,24 @@ export function Login() {
     connector: new InjectedConnector(),
   });
   return (
-    <VStack divider={<Divider borderColor={"gray.400"}/>} spacing={12} m={4}>
-      <Box textAlign={"center"}>
-        <Box>[Large Logo]</Box>
-        <Box>HONEYPOT provides loans using your NFTs as collateral. Buy an NFT from a trusted source and then provide it
-          as collateral for a short-term loan.</Box>
+    <VStack divider={<Divider borderColor={"gray.400"}/>} spacing={8} m={4}>
+      <Box>
+        [Logo]
+        <Text>
+          It’s Your Honey. HONEYPOT is a quick and powerful way to evaluate your NFT Portfolio and access secure loans by using your NFTs as collateral. NFTs purchased from a trusted source can be instantly turned into collateral for a short-term loan.
+        </Text>
+        <Text>
+          HONEYPOT is a one stop NFT Portfolio and Loan App. Access Your Honey.
+        </Text>
       </Box>
       <Box>
         <Box textAlign={"center"}>
           <ConnectToWalletButton />
         </Box>
-        <div>
-          <p>Secure and verified transactions.</p>
-          <p>NFT prices based on Truflation Index.</p>
-        </div>
+        <Box mt={3} fontSize={14}>
+          <Text><Icon color="teal" as={RiShieldCheckLine} /> Secure and verified transactions</Text>
+          <Text><Icon color="teal" as={RiGooglePlayFill} /> Access and manage loans confidently</Text>
+        </Box>
       </Box>
       <Box>
         <Heading as="h2" size={"lg"} textAlign={"center"}>Success Stories</Heading>
