@@ -52,7 +52,7 @@ export default function App() {
         <Spacer />
         <Box>
           <NavButton icon={<RiAppleFill />}>Download on iOS</NavButton>
-          <NavButton icon={<RiGooglePlayFill />}>Download on Google Play</NavButton>
+          <NavButton icon={<RiGooglePlayFill />}>Download on Android</NavButton>
         </Box>
       </Box>
       <Center className={"App--container"}>
