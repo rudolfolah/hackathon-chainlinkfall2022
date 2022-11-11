@@ -40,7 +40,7 @@ export function Settings() {
     abi: contract.contractAbi,
     functionName: "requestUpdateLoanConfig",
     overrides: {
-      gasLimit: BigNumber.from(200000),
+      gasLimit: BigNumber.from(500000),
     },
   });
   const {
@@ -102,7 +102,7 @@ export function Settings() {
         </Text>
       </Box>
       <Box>
-        {!truflationIndexValueLoading && truflationIndexValue && truflationIndexValue.length > 0 && <Text>{BigNumber.from(truflationIndexValue).toString()}</Text>}
+        {!truflationIndexValueLoading && truflationIndexValue && truflationIndexValue.length > 0 && <Text>{truflationIndexValue}</Text>}
         <Text>{`Update Loan Configuration From Truflation NFT Index: ${truflationIndexValue} ${riskIndexValue}`}</Text>
         <Button onClick={() => contractWriteRequestUpdateLoanConfig?.()}>Update</Button>
       </Box>
