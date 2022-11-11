@@ -1,5 +1,5 @@
 import React from "react";
-import {Box, Center, Heading, Flex, Spinner, Text, Spacer} from "@chakra-ui/react";
+import {Box, Center, Heading, Flex, Spinner, Text} from "@chakra-ui/react";
 
 
 export function Splashscreen({ onClick }: { onClick: () => void }) {

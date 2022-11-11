@@ -42,8 +42,6 @@
     .App--phone-container {
         width: 375px;
         height: 812px;
-        margin: 12px;
-        padding: 36px;
         border: 1px solid black;
         overflow: scroll;
         cursor: cell;

@@ -16,6 +16,7 @@ import {useEffect, useState} from "react";
 import {useContractWrite, usePrepareContractWrite} from "wagmi";
 import {contractAbi, contractAddress, nftContractAddress} from "../contract";
 import {BigNumber} from "ethers";
+import {RiAppsLine} from "react-icons/ri";
 
 export interface LoanOption {
   numDays: number,
@@ -50,7 +51,7 @@ export function NftItem({ name, tokenId, enabled, onClick }: NftItemProps) {
         </Box>
         <Spacer />
         <Box>
-          {isOpen ? <CloseButton onClick={onClose} /> : <IconButton aria-label={"open"} icon={<PlusSquareIcon onClick={onOpen} />} variant={"ghost"} />}
+          {isOpen ? <CloseButton onClick={onClose} /> : <IconButton aria-label={"open"} icon={<RiAppsLine />} onClick={onOpen} variant={"ghost"} />}
         </Box>
       </Flex>
       <Collapse in={isOpen} animateOpacity>

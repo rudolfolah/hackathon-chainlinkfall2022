@@ -1,6 +1,6 @@
 import {useState} from "react";
-import { Box, HStack, VStack, Flex, Button, Text, Heading, Spinner, SkeletonText, Skeleton, Stat, StatNumber, StatLabel} from "@chakra-ui/react";
-import {Icon, WarningTwoIcon} from "@chakra-ui/icons";
+import { Box, HStack, VStack, Flex, Button, Text, Icon, Heading, Spinner, SkeletonText, Skeleton, Stat, StatNumber, StatLabel} from "@chakra-ui/react";
+import {RiAlertFill} from "react-icons/ri";
 import {PageHeader} from "../components/PageHeader";
 import {Loan, LoanItem} from "../components/LoanItem";
 
@@ -28,7 +28,7 @@ export function Loans() {
             <StatLabel>ETH Unpaid</StatLabel>
           </Stat>
         </HStack>
-        <Text as={"b"} fontSize={"xs"}><Icon as={WarningTwoIcon} color={"yellow.400"} />Warning: loans that are not paid in full will result in a loss of collateral.</Text>
+        <Text as={"b"} fontSize={"sm"}><Icon as={RiAlertFill} color={"yellow.500"} />Warning: loans that are not paid in full will result in a loss of collateral.</Text>
       </PageHeader>
       <Box>
         <LoanItem loan={loans[0]} />
