@@ -6,7 +6,8 @@
   "scripts": {
     "test": "hardhat test",
     "prettier": "prettier --write 'contracts/**/*.sol' 'test/**/*.ts'",
-    "deploy": "hardhat run --network mumbai ./deploy.ts"
+    "deploy": "hardhat run --network mumbai ./deploy.ts",
+    "deploy-oracle": "hardhat run --network mumbai ./deploy_testnet_oracle.ts"
   },
   "author": "",
   "license": "ISC",
