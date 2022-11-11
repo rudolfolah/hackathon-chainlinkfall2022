@@ -5,8 +5,8 @@ import {publicProvider} from "wagmi/providers/public";
 
 import "./App.css";
 import {Honeypot} from "./Honeypot";
-import {Box, Button, Center, Flex, Heading, Spacer, Text} from "@chakra-ui/react";
-import {Icon} from "@chakra-ui/icons";
+import {Splashscreen} from "./pages/Splashscreen";
+import {Box, Button, Center, Heading, Spacer, Text} from "@chakra-ui/react";
 import {RiAppleFill, RiGooglePlayFill} from "react-icons/ri";
 
 // Configure QuickNode with Polygon Mumbai Testnet
@@ -42,6 +42,8 @@ export default function App() {
   // if (!isConnected) {
   //   return (<WagmiConfig client={client}><Login /></WagmiConfig>);
   // }
+  const [showSplashscreen, setShowSplashscreen] = React.useState(true);
+  const showApp = () => setShowSplashscreen(false);
 
   return (
     <WagmiConfig client={client}>
@@ -57,13 +59,13 @@ export default function App() {
       </Box>
       <Center className={"App--container"}>
         <Box className={"App--marketing"}>
-          <Heading as={"h1"}>HONEYPOT</Heading>
-          <Text>Chainlink Fall 2022 Hackathon Entry</Text>
-          <Text>Built on Polygon, Chainlink, Truflation, Bacalhau, IPFS and QuickNode.</Text>
-          <Text>Team: Rudolf, Natalja</Text>
+          <Heading as={"h1"} fontSize={32} mb={5}>HONEYPOT</Heading>
+          <Heading as={"h2"} fontSize={24}>It's Your Honey.</Heading>
+          <Heading as={"h2"} fontSize={24}>Instant NFT Liquidity for Quick and Secure Loans.</Heading>
+          <Text mt={5}>Chainlink Fall 2022 Hackathon Entry</Text>
         </Box>
         <Box className={"App--phone-container"}>
-          <Honeypot />
+          {showSplashscreen ? <Splashscreen onClick={showApp} /> : <Honeypot />}
         </Box>
       </Center>
     </WagmiConfig>

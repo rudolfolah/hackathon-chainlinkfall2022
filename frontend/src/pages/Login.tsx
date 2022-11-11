@@ -1,5 +1,5 @@
 import React from "react";
-import {Box, Divider, Heading, VStack} from "@chakra-ui/react";
+import {Box, Divider, Heading, Image, VStack} from "@chakra-ui/react";
 import {useAccount, useConnect} from "wagmi";
 import {InjectedConnector} from "wagmi/connectors/injected";
 import {ConnectToWalletButton} from "../components/ConnectToWalletButton";
@@ -28,6 +28,7 @@ export function Login() {
       </Box>
       <Box>
         <Heading as="h2" size={"lg"} textAlign={"center"}>Success Stories</Heading>
+        <Image src={"/images/nft-example-0.png"} boxSize={100} />
         <p>This NFT was used as collateral for a 7 day loan. The borrower received 1 ETH with an interest rate of 4%.
           They fully paid the loan and their NFT was returned to them.</p>
         <p>This NFT was used as collateral for a 7 day loan. The borrower received 1 ETH with an interest rate of 4%.
