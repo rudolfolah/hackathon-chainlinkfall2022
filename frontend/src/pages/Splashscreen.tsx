@@ -23,12 +23,12 @@ export function Splashscreen({ onClick }: { onClick: () => void }) {
       <motion.div animate={show ? "show" : "hide"} variants={variants} onAnimationComplete={onAnimationComplete}>
         <Flex direction={"column"} justify={"center"} textAlign={"center"}>
           <motion.div animate={{
-            scale: [1, 1.5],
+            scale: [0.5, 1],
             y: [50, 0],
           }}>
             <Box>Logo</Box>
             <Box mb={100}>
-              <Heading fontFamily={"'Julius Sans One', sans-serif"} as={"h1"}>HONEY BEE<br/>LOANS</Heading>
+              <Heading fontFamily={"'Julius Sans One', sans-serif"} as={"h1"} fontSize={34}>HONEYBEE LOANS</Heading>
             </Box>
           </motion.div>
           <motion.div animate={{

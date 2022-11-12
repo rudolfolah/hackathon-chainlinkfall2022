@@ -1,4 +1,4 @@
-# HONEY BEE LOANS
+# HONEYBEE LOANS
 
 DeFi lending protocol for NFTs using Chainlink Oracles
 

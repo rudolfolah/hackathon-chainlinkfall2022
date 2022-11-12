@@ -16,10 +16,10 @@ export function Login() {
       <Box>
         [Logo]
         <Text>
-          It’s Your Honey. HONEY BEE LOANS is a quick and powerful way to evaluate your NFT Portfolio and access secure loans by using your NFTs as collateral. NFTs purchased from a trusted source can be instantly turned into collateral for a short-term loan.
+          It’s Your Honey. HONEYBEE LOANS is a quick and powerful way to evaluate your NFT Portfolio and access secure loans by using your NFTs as collateral. NFTs purchased from a trusted source can be instantly turned into collateral for a short-term loan.
         </Text>
         <Text>
-          HONEY BEE LOANS is a one stop NFT Portfolio and Loan App. Access Your Honey.
+          HONEYBEE LOANS is a one stop NFT Portfolio and Loan App. Access Your Honey.
         </Text>
       </Box>
       <Box>

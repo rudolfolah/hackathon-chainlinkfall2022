@@ -50,7 +50,7 @@ export default function App() {
       <Box className={"App--nav"} p={2}>
         <Box>
           <Text fontFamily={"'Julius Sans One', sans-serif"} fontSize={16}>
-            HONEY BEE LOANS
+            HONEYBEE LOANS
           </Text>
         </Box>
         <Spacer />
@@ -61,7 +61,7 @@ export default function App() {
       </Box>
       <Center className={"App--container"}>
         <Box className={"App--marketing"}>
-          <Heading as={"h1"} fontFamily={"'Julius Sans One', sans-serif"} fontSize={32} mb={5}>HONEY BEE LOANS</Heading>
+          <Heading as={"h1"} fontFamily={"'Julius Sans One', sans-serif"} fontSize={32} mb={5}>HONEYBEE LOANS</Heading>
           <Heading as={"h2"} fontSize={24}>It's Your Honey.</Heading>
           <Heading as={"h2"} fontSize={24}>Instant NFT Liquidity for Quick and Secure Loans.</Heading>
           <Text mt={5}>Chainlink Fall 2022 Hackathon Entry</Text>
