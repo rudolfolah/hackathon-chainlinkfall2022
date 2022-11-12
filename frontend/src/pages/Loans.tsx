@@ -5,8 +5,9 @@ import {Loan, LoanItem} from "../components/LoanItem";
 
 export function Loans() {
   const [loans, setLoans] = useState<Loan[]>([
-    {nftName: "Amazing 1", rate: 5.25, amount: 1.23, unpaidAmount: 0.23, paidAmount: 1.0, numDays: 7, daysRemaining: 3 },
-    ]);
+    { nftName: "Prototype NFT #102", rate: 5.25, amount: 1.3, unpaidAmount: 0.23, paidAmount: 1.0, numDays: 14, daysRemaining: 5, paymentProgress: 30 },
+    { nftName: "Prototype NFT #103", rate: 14.2, amount: 0.5, unpaidAmount: 0.1, paidAmount: 0.4, numDays: 7, daysRemaining: 2, paymentProgress: 70 },
+  ]);
 
   const styles = useMemo(() => ({
     stat: {
@@ -32,11 +33,11 @@ export function Loans() {
             <StatLabel {...styles.statLabel}>Loans Paid</StatLabel>
           </Stat>
           <Stat {...styles.stat} bgColor={"teal"}>
-            <StatNumber>3</StatNumber>
+            <StatNumber>{loans.length}</StatNumber>
             <StatLabel {...styles.statLabel}>Loans Unpaid</StatLabel>
           </Stat>
           <Stat {...styles.stat} bgColor={"teal"}>
-            <StatNumber>3.63</StatNumber>
+            <StatNumber>{loans.map(loan => loan.unpaidAmount).reduce((acc, value) => acc + value)}</StatNumber>
             <StatLabel {...styles.statLabel}>ETH Unpaid</StatLabel>
           </Stat>
         </HStack>
@@ -46,7 +47,9 @@ export function Loans() {
         </Text>
       </Box>
       <Box>
-        <LoanItem loan={loans[0]} />
+        {loans.map((loan, i) => (
+          <LoanItem key={i} loan={loan} />
+        ))}
       </Box>
     </VStack>
   );
