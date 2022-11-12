@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index",
-    "gather": "node 01_gather",
+    "gather": "node 01_gather > initial_training_data.csv",
     "train": "node 02_train"
   },
   "type": "module",
