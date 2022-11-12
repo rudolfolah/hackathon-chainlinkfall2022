@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index"
+    "start": "node index",
+    "gather": "node 01_gather",
+    "train": "node 02_train"
   },
   "type": "module",
   "author": "",
