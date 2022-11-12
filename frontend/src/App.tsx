@@ -49,7 +49,7 @@ export default function App() {
     <WagmiConfig client={client}>
       <Box className={"App--nav"} p={2}>
         <Box mt={1} ml={2}>
-          <Image src={"/images/logo.png"} width={16} />
+          <Image src={"/images/logo-small.png"} width={16} />
           <Text fontFamily={"'Julius Sans One', sans-serif"} fontSize={18} fontWeight={"bold"}>
             HONEYBEE LOANS
           </Text>
