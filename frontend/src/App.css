@@ -42,8 +42,9 @@
     .App--phone-container {
         width: 375px;
         height: 812px;
-        border: 1px solid black;
+        border: 1px solid #2f2f2f;
         overflow: scroll;
         cursor: cell;
+        border-radius: 12px;
     }
 }

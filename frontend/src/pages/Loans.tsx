@@ -1,7 +1,6 @@
 import {useState} from "react";
 import { Box, HStack, VStack, Flex, Button, Text, Icon, Heading, Spinner, SkeletonText, Skeleton, Stat, StatNumber, StatLabel} from "@chakra-ui/react";
 import {RiAlertFill} from "react-icons/ri";
-import {PageHeader} from "../components/PageHeader";
 import {Loan, LoanItem} from "../components/LoanItem";
 
 export function Loans() {
@@ -11,7 +10,7 @@ export function Loans() {
 
   return (
     <VStack>
-      <PageHeader title={"Loans"}>
+      <Box>
         <Text>When you fully pay back a loan, we match a portion of the gas fees and donate it to one of our three charity partner streams. These charities represent three key areas of growth and collaboration; an organization such as women who code, climate change action, animal welfare organizations including Toronto Humane Society.</Text>
         <HStack>
           <Stat>
@@ -28,7 +27,7 @@ export function Loans() {
           </Stat>
         </HStack>
         <Text as={"b"} fontSize={"sm"}><Icon as={RiAlertFill} color={"yellow.500"} />Warning: loans that are not paid in full will result in a loss of collateral.</Text>
-      </PageHeader>
+      </Box>
       <Box>
         <LoanItem loan={loans[0]} />
       </Box>

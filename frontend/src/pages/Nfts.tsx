@@ -4,7 +4,6 @@ import {BigNumber} from "ethers";
 import {useAccount, useContractRead, useContractReads, useContractWrite, usePrepareContractWrite} from "wagmi";
 
 import {NftItem} from "../components/NftItem";
-import {PageHeader} from "../components/PageHeader";
 import * as contract from "../contract"
 import {AcceptLoanModal} from "../components/AcceptLoanModal";
 
@@ -144,15 +143,15 @@ export function Nfts() {
         onSubmit={acceptLoan}
       />
       <VStack>
-        <PageHeader title={"NFTs"}>
+        <Box>
           <Text>Select an NFT and deposit it. After depositing you will receive the loan amount.</Text>
-        </PageHeader>
+        </Box>
         <VStack divider={<Divider borderColor={"gray.400"}/>} spacing={0} w={"100%"}>
           {isLoading && (<Box w={"100%"}>
             <Skeleton />
           </Box>)}
           {!nftIsApprovedForAll && <Box w={"100%"}>
-            <Button onClick={approveForAll}>Approve All NFTs for Loans</Button>
+            <Button onClick={approveForAll} colorScheme="yellow" bgGradient={"linear(76.71deg, #FEE186 11.01%, #FCD456 31.68%, #FFEAA8 69.1%, #EFC235 97.65%)"}>Approve All NFTs for Loans</Button>
           </Box>}
           {state.ownedNfts.map(ownedNft => (
             <Box key={`prototype-nft-${ownedNft}`} w={"100%"}>

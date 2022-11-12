@@ -31,7 +31,7 @@ const client = createClient({
 
 function NavButton({ icon, children }: { icon: ReactElement, children: any }): ReactElement {
   return (
-    <Button variant="outline" size="md" leftIcon={icon} m={2} colorScheme={"teal"}>
+    <Button variant="solid" size="md" leftIcon={icon} m={2} colorScheme={"blackAlpha"}>
       {children}
     </Button>
   );
@@ -48,7 +48,7 @@ export default function App() {
   return (
     <WagmiConfig client={client}>
       <Box className={"App--nav"} p={2}>
-        <Box>
+        <Box mt={1} ml={2}>
           <Image src={"/images/logo.png"} width={16} />
           <Text fontFamily={"'Julius Sans One', sans-serif"} fontSize={18} fontWeight={"bold"}>
             HONEYBEE LOANS
