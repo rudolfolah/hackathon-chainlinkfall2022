@@ -1,5 +1,5 @@
 import React from "react";
-import {Box, Center, Heading, Flex, Spinner, Text} from "@chakra-ui/react";
+import {Box, Center, Heading, Flex, Spinner, Text, Image} from "@chakra-ui/react";
 import {motion} from "framer-motion";
 
 
@@ -26,7 +26,9 @@ export function Splashscreen({ onClick }: { onClick: () => void }) {
             scale: [0.5, 1],
             y: [50, 0],
           }}>
-            <Box>Logo</Box>
+            <Box p={5}>
+              <Image src={"/images/logo.png"} />
+            </Box>
             <Box mb={100}>
               <Heading fontFamily={"'Julius Sans One', sans-serif"} as={"h1"} fontSize={34}>HONEYBEE LOANS</Heading>
             </Box>
