@@ -28,7 +28,7 @@ export function HoneyBeeLoansApp() {
   }, []);
 
   const { address, isConnected } = useAccount();
-  if (isConnected) {
+  if (!isConnected) {
     return (<Login />);
   }
 
