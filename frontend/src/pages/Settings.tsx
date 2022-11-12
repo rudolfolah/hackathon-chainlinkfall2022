@@ -95,14 +95,14 @@ export function Settings() {
           {tokenBalanceLoading ? <SkeletonText /> : `${tokenBalance?.toString()} HPT`}
         </Text>
       </Box>
-      <Box>
+      <Box fontSize={13}>
         {!truflationIndexValueLoading && truflationIndexValue && truflationIndexValue.length > 0 && <Text>{truflationIndexValue}</Text>}
         <Text>{`Update Loan Configuration Based On Truflation NFT Index and HONEYBEE LOANS Risk Oracle: ${truflationIndexValue} ${riskIndexValue}`}</Text>
         <Button onClick={() => contractWriteRequestUpdateLoanConfig?.()}>Update</Button>
       </Box>
       <Box>
         <Text>Loan Amount and Interest Rate Range based on NFT Index Value</Text>
-        <BarChart width={325} height={300} data={chartData}
+        <BarChart width={325} height={225} data={chartData}
                   title={"Loan Interest Rate Range based on NFT Index"}
                   margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
           <CartesianGrid strokeDasharray="3 3" />
@@ -112,7 +112,7 @@ export function Settings() {
           <Bar yAxisId={"dollars"} dataKey="paybackAmount" fill="#333555" />
           <Tooltip />
         </BarChart>
-        <BarChart width={325} height={300} data={chartData}
+        <BarChart width={325} height={225} data={chartData}
                   title={"Loan Interest Rate Range based on NFT Index"}
                   margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
           <CartesianGrid strokeDasharray="3 3" />
