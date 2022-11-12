@@ -13,12 +13,12 @@ import {RiAppleFill, RiGooglePlayFill} from "react-icons/ri";
 const { chains, provider, webSocketProvider } = configureChains(
   [chain.polygonMumbai],
   [
-    jsonRpcProvider({
-      rpc: (chain) => ({
-        http: "https://maximum-small-hexagon.matic-testnet.discover.quiknode.pro/6093ef65b60c6a7d7e7635c01534aa7afbec5689/",
-        webSocket: "wss://maximum-small-hexagon.matic-testnet.discover.quiknode.pro/6093ef65b60c6a7d7e7635c01534aa7afbec5689/",
-      }),
-    }),
+    // jsonRpcProvider({
+    //   rpc: (chain) => ({
+    //     http: "https://maximum-small-hexagon.matic-testnet.discover.quiknode.pro/6093ef65b60c6a7d7e7635c01534aa7afbec5689/",
+    //     webSocket: "wss://maximum-small-hexagon.matic-testnet.discover.quiknode.pro/6093ef65b60c6a7d7e7635c01534aa7afbec5689/",
+    //   }),
+    // }),
     publicProvider(),
   ],
 );
