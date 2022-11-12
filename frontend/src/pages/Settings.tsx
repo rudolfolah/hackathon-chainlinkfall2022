@@ -1,6 +1,6 @@
 import {useAccount, useContractRead, useContractWrite, usePrepareContractWrite} from "wagmi";
 import {Box, Button, Divider, Heading, SkeletonText, Text, VStack} from "@chakra-ui/react";
-import { BarChart, XAxis, YAxis, Bar, Tooltip } from "recharts";
+import {BarChart, Scatter, XAxis, YAxis, Bar, Tooltip, CartesianGrid} from "recharts";
 import React from "react";
 import * as contract from "../contract";
 import {BigNumber} from "ethers";
@@ -85,46 +85,40 @@ export function Settings() {
   }
 
   return (
-    <VStack divider={<Divider borderColor={"gray.400"} />} spacing={12} m={4}>
-      <Box textAlign={"center"} overflowWrap={"anywhere"}>
+    <VStack divider={<Divider borderColor={"gray.400"} />} spacing={2}>
+      <Box textAlign={"center"} overflowWrap={"anywhere"} fontSize={13}>
         <Text>Wallet: {address}</Text>
-      </Box>
-      <Box>
-        <Heading>HONEYBEE LOANS Prototype Token</Heading>
+        <Text>
+          {nftBalanceLoading ? <SkeletonText /> : `Owns ${nftBalance?.toString()} HONEYBEE LOANS Prototype NFTs`}
+        </Text>
         <Text>
           {tokenBalanceLoading ? <SkeletonText /> : `${tokenBalance?.toString()} HPT`}
         </Text>
       </Box>
       <Box>
-        <Heading>HONEYBEE LOANS Nft</Heading>
-        <Text>
-          {nftBalanceLoading ? <SkeletonText /> : `Owns ${nftBalance?.toString()} HONEYBEE LOANS Prototype NFTs`}
-        </Text>
-      </Box>
-      <Box>
         {!truflationIndexValueLoading && truflationIndexValue && truflationIndexValue.length > 0 && <Text>{truflationIndexValue}</Text>}
-        <Text>{`Update Loan Configuration From Truflation NFT Index: ${truflationIndexValue} ${riskIndexValue}`}</Text>
+        <Text>{`Update Loan Configuration Based On Truflation NFT Index and HONEYBEE LOANS Risk Oracle: ${truflationIndexValue} ${riskIndexValue}`}</Text>
         <Button onClick={() => contractWriteRequestUpdateLoanConfig?.()}>Update</Button>
       </Box>
       <Box>
-        <Heading>Loan Interest Rate Range based on NFT Index Value</Heading>
+        <Text>Loan Amount and Interest Rate Range based on NFT Index Value</Text>
         <BarChart width={325} height={300} data={chartData}
                   title={"Loan Interest Rate Range based on NFT Index"}
                   margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+          <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="nftIndexValue" />
-          <YAxis label={"%"} />
-          <Bar dataKey="rate" fill="#8884d8" />
+          <YAxis yAxisId={"dollars"} label={"$"} orientation={"left"} />
+          <Bar yAxisId={"dollars"} dataKey="loanedAmount" fill="#8884d8" />
+          <Bar yAxisId={"dollars"} dataKey="paybackAmount" fill="#333555" />
           <Tooltip />
         </BarChart>
-      </Box>
-      <Box>
-        <Heading>Loan Amount Range based on NFT Index Value</Heading>
         <BarChart width={325} height={300} data={chartData}
+                  title={"Loan Interest Rate Range based on NFT Index"}
                   margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+          <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="nftIndexValue" />
-          <YAxis label={"$"} />
-          <Bar dataKey="loanedAmount" fill="#8884d8" />
-          <Bar dataKey="paybackAmount" fill="#333555" />
+          <YAxis yAxisId={"percent"} label={"%"} orientation={"left"} />
+          <Bar yAxisId={"percent"} dataKey="rate" fill="#8884d8" />=
           <Tooltip />
         </BarChart>
       </Box>
