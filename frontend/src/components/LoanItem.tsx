@@ -5,7 +5,7 @@ export interface Loan {
   daysRemaining: number;
   paidAmount: number;
   unpaidAmount: number;
-  numDays: number,
+  numDays: number;
   amount: number;
   rate: number;
   paymentProgress: number;
