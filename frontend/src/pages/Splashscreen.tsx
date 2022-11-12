@@ -27,7 +27,9 @@ export function Splashscreen({ onClick }: { onClick: () => void }) {
             y: [50, 0],
           }}>
             <Box>Logo</Box>
-            <Box mb={100} ><Heading as={"h1"}>HONEYPOT</Heading></Box>
+            <Box mb={100}>
+              <Heading fontFamily={"'Julius Sans One', sans-serif"} as={"h1"}>HONEY BEE<br/>LOANS</Heading>
+            </Box>
           </motion.div>
           <motion.div animate={{
             opacity: [0, 0, 1],

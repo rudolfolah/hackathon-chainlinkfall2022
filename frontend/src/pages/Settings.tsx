@@ -90,15 +90,15 @@ export function Settings() {
         <Text>Wallet: {address}</Text>
       </Box>
       <Box>
-        <Heading>Honeypot Prototype Token</Heading>
+        <Heading>HONEY BEE LOANS Prototype Token</Heading>
         <Text>
           {tokenBalanceLoading ? <SkeletonText /> : `${tokenBalance?.toString()} HPT`}
         </Text>
       </Box>
       <Box>
-        <Heading>Honeypot Nft</Heading>
+        <Heading>HONEY BEE LOANS Nft</Heading>
         <Text>
-          {nftBalanceLoading ? <SkeletonText /> : `Owns ${nftBalance?.toString()} Honeypot Prototype NFTs`}
+          {nftBalanceLoading ? <SkeletonText /> : `Owns ${nftBalance?.toString()} HONEY BEE LOANS Prototype NFTs`}
         </Text>
       </Box>
       <Box>

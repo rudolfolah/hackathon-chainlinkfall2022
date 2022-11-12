@@ -4,7 +4,7 @@ import {jsonRpcProvider} from "wagmi/providers/jsonRpc";
 import {publicProvider} from "wagmi/providers/public";
 
 import "./App.css";
-import {Honeypot} from "./Honeypot";
+import {HoneyBeeLoansApp} from "./HoneyBeeLoansApp";
 import {Splashscreen} from "./pages/Splashscreen";
 import {Box, Button, Center, Heading, Spacer, Text} from "@chakra-ui/react";
 import {RiAppleFill, RiGooglePlayFill} from "react-icons/ri";
@@ -31,7 +31,7 @@ const client = createClient({
 
 function NavButton({ icon, children }: { icon: ReactElement, children: any }): ReactElement {
   return (
-    <Button variant="outline" size="sm" leftIcon={icon} m={2}>
+    <Button variant="outline" size="md" leftIcon={icon} m={2} colorScheme={"teal"}>
       {children}
     </Button>
   );
@@ -49,7 +49,9 @@ export default function App() {
     <WagmiConfig client={client}>
       <Box className={"App--nav"} p={2}>
         <Box>
-          HONEYPOT
+          <Text fontFamily={"'Julius Sans One', sans-serif"} fontSize={16}>
+            HONEY BEE LOANS
+          </Text>
         </Box>
         <Spacer />
         <Box>
@@ -59,13 +61,13 @@ export default function App() {
       </Box>
       <Center className={"App--container"}>
         <Box className={"App--marketing"}>
-          <Heading as={"h1"} fontSize={32} mb={5}>HONEYPOT</Heading>
+          <Heading as={"h1"} fontFamily={"'Julius Sans One', sans-serif"} fontSize={32} mb={5}>HONEY BEE LOANS</Heading>
           <Heading as={"h2"} fontSize={24}>It's Your Honey.</Heading>
           <Heading as={"h2"} fontSize={24}>Instant NFT Liquidity for Quick and Secure Loans.</Heading>
           <Text mt={5}>Chainlink Fall 2022 Hackathon Entry</Text>
         </Box>
-        <Box className={"App--phone-container"}>
-          {showSplashscreen ? <Splashscreen onClick={showApp} /> : <Honeypot />}
+        <Box className={"App--phone-container"} bgColor={"white"}>
+          {showSplashscreen ? <Splashscreen onClick={showApp} /> : <HoneyBeeLoansApp />}
         </Box>
       </Center>
     </WagmiConfig>

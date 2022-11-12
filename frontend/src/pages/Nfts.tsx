@@ -1,14 +1,12 @@
+import {useEffect, useReducer} from "react";
 import {Box, Button, Divider, Skeleton, Text, VStack} from "@chakra-ui/react";
+import {BigNumber} from "ethers";
+import {useAccount, useContractRead, useContractReads, useContractWrite, usePrepareContractWrite} from "wagmi";
 
 import {NftItem} from "../components/NftItem";
 import {PageHeader} from "../components/PageHeader";
-import {useAccount, useContractRead, useContractReads, useContractWrite, usePrepareContractWrite} from "wagmi";
-import {useEffect, useState, useReducer} from "react";
 import * as contract from "../contract"
-import {BigNumber} from "ethers";
 import {AcceptLoanModal} from "../components/AcceptLoanModal";
-import {contractAbi, contractAddress, nftContractAddress} from "../contract";
-
 
 const nftIds = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
 
@@ -81,10 +79,10 @@ export function Nfts() {
   } = useContractWrite(configContractWriteSetApprovalForAll);
 
   const { config: configContractWriteSetLoanAmountBounds } = usePrepareContractWrite({
-    address: contractAddress,
-    abi: contractAbi,
+    address: contract.contractAddress,
+    abi: contract.contractAbi,
     functionName: "depositNft721",
-    args: [nftContractAddress, BigNumber.from((state.modalNft?.tokenId ?? "-1").toString())],
+    args: [contract.nftContractAddress, BigNumber.from((state.modalNft?.tokenId ?? "-1").toString())],
     // functionName: "requestUpdateLoanConfig",
     // args: [BigNumber.from(4), BigNumber.from(10)],
     overrides: {
@@ -111,7 +109,7 @@ export function Nfts() {
 
     const owned = [];
     for (let i = 0; i < nftIds.length; i += 1) {
-      if (nftOwners[i] == address as any) {
+      if (nftOwners[i] === address as any) {
         owned.push(nftIds[i]);
       }
     }
@@ -169,5 +167,5 @@ export function Nfts() {
         </VStack>
       </VStack>
     </>
-  )
+  );
 }

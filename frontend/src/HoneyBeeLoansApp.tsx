@@ -8,16 +8,13 @@ import {Loans} from "./pages/Loans";
 import {Settings} from "./pages/Settings";
 import {Login} from "./pages/Login";
 
-export function Honeypot() {
+export function HoneyBeeLoansApp() {
   const { address, isConnected } = useAccount();
   if (isConnected) {
     return (<Login />);
   }
 
   return <Tabs isFitted={true} size={"lg"} variant={"enclosed-colored"}>
-    {/*<Center>*/}
-    {/*  <Heading>HONEYPOT</Heading>*/}
-    {/*</Center>*/}
     <TabList>
       <Tab flex={7}><Text as={"b"}>NFT Portfolio</Text> <Badge colorScheme="green">5+</Badge></Tab>
       <Tab flex={4}><Text as={"b"}>Loans</Text> <Badge colorScheme="red">1</Badge></Tab>

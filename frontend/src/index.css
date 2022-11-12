@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Julius+Sans+One&family=Lato:wght@400;700&display=swap');
 
 body {
     margin: 0;
@@ -7,6 +7,7 @@ body {
     sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    background: radial-gradient(55.5% 99.38% at 38.82% 43.56%, #FFFFFF 0%, #FFF0B3 17.29%, #BDFFF8 58.93%, #FFDE59 100%) /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */ !important;
 }
 
 code {
