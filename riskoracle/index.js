@@ -9,8 +9,8 @@ server.on("request", (req, res) => {
     return;
   }
   const address = url.searchParams.get("a");
-  const riskLevel = 0;
-  res.end(riskLevel.toString());
+  const riskScore = 0;
+  res.end(JSON.stringify({ riskScore }));
 });
 
 server.listen({
