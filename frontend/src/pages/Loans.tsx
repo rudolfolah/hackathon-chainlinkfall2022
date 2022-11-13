@@ -38,7 +38,7 @@ export function Loans() {
           </Stat>
           <Stat {...styles.stat} bgColor={"teal"}>
             <StatNumber>{loans.map(loan => loan.unpaidAmount).reduce((acc, value) => acc + value)}</StatNumber>
-            <StatLabel {...styles.statLabel}>ETH Unpaid</StatLabel>
+            <StatLabel {...styles.statLabel}>HPT Unpaid</StatLabel>
           </Stat>
         </HStack>
         <Text as={"b"} fontSize={"sm"}>

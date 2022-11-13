@@ -25,12 +25,12 @@ export function LoanItem({ loan }: LoanItemProps) {
       <Flex flexDirection={"row"}>
         <Box width={150}>
           <Text>{loan.numDays}-day loan</Text>
-          <Text>{loan.amount} ETH @ {loan.rate}%</Text>
+          <Text>{loan.amount} HPT @ {loan.rate}%</Text>
           <Text>{loan.daysRemaining} days left</Text>
         </Box>
         <Box width={150} textAlign={"right"}>
-          <Text>Paid: {loan.paidAmount} ETH</Text>
-          <Text>Remaining: {loan.unpaidAmount} ETH</Text>
+          <Text>Paid: {loan.paidAmount} HPT</Text>
+          <Text>Remaining: {loan.unpaidAmount} HPT</Text>
           <Button mt={3}>Pay back loan</Button>
         </Box>
       </Flex>

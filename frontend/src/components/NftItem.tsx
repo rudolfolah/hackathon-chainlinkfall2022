@@ -70,7 +70,7 @@ export function NftItem({ name, tokenId, enabled, onClick }: NftItemProps) {
                       disabled={!enabled}
                       onClick={onClick}
               >
-                {option.amount} ETH @ {option.rate}%
+                {option.amount} HPT @ {option.rate}%
               </Button>
             </Box>
           </Flex>

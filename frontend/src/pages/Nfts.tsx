@@ -124,7 +124,7 @@ export function Nfts() {
           name: `Prototype NFT #${ownedNft}`,
           tokenId: ownedNft,
           numDays: 7,
-          loanAmount: "1 ETH",
+          loanAmount: "1 HPT",
           loanRate: "5.25%",
         },
       });
@@ -144,7 +144,7 @@ export function Nfts() {
       />
       <VStack>
         <Box>
-          <Text>Select an NFT and deposit it. After depositing you will receive the loan amount.</Text>
+          <Text>Select an NFT and deposit it. After depositing you will receive the loan amount in HPT ERC20 tokens.</Text>
         </Box>
         <VStack divider={<Divider borderColor={"gray.400"}/>} spacing={0} w={"100%"}>
           {isLoading && (<Box w={"100%"}>
