@@ -2,6 +2,8 @@
 
 DeFi lending protocol for NFTs using Chainlink Oracles
 
+* [Architecture and System Design](./Architecture%20and%20System%20Design%20-%20HONEYBEE%20LOANS.pdf)
+
 ## Running the Code
 Directory structure:
 - `contract`: lending protocol smart contract code written in Solidity, works with Truflation NFT Index
