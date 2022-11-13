@@ -1,1 +1,19 @@
-// TODO: web server API that uses 03_predict.js
+import * as http from "http";
+
+const server = new http.Server();
+
+server.on("request", (req, res) => {
+  const url = new URL(req.url, `http://${req.headers.host}`);
+  if (url.searchParams.has("a")) {
+    res.end("-1");
+    return;
+  }
+  const address = url.searchParams.get("a");
+  const riskLevel = 0;
+  res.end(riskLevel.toString());
+});
+
+server.listen({
+  host: "0.0.0.0",
+  port: 8080
+});
