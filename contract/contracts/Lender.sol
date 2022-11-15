@@ -21,6 +21,8 @@ contract Lender is ChainlinkClient, ConfirmedOwner {
     string public truflationJobId;
     string public truflationResult;
 
+    // Risk Oracle
+    string public riskApiUrl;
     string public riskResult;
 
     struct Loan {
@@ -71,13 +73,15 @@ contract Lender is ChainlinkClient, ConfirmedOwner {
         address chainlinkToken_,
         address chainlinkOracle_,
         address truflationOracleId_,
-        string memory truflationJobId_
+        string memory truflationJobId_,
+        string memory riskApiUrl_
     ) ConfirmedOwner(msg.sender) {
         setChainlinkToken(chainlinkToken_);
         setChainlinkOracle(chainlinkOracle_);
         truflationOracleId = truflationOracleId_;
         truflationJobId = truflationJobId_;
         truflationResult = "1";
+        riskApiUrl = riskApiUrl_;
 
         loanAmountMin = 0.01 ether;
         loanAmountMax = 5 ether;
@@ -116,11 +120,8 @@ contract Lender is ChainlinkClient, ConfirmedOwner {
             address(this),
             this.fulfillRisk.selector
         );
-        req.add(
-            "get",
-            "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&per_page=10"
-        );
-        req.add("path", "0,id");
+        req.add("get", riskApiUrl);
+        req.add("path", "0,id"); // TODO: replace with: req.add("path", "riskScore");
         return sendChainlinkRequest(req, 1000000000000000000);
     }
 

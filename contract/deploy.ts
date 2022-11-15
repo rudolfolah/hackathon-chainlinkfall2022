@@ -23,6 +23,8 @@ async function main() {
     "0x17dED59fCd940F0a40462D52AAcD11493C6D8073",
     // truflation job id
     "8b459447262a4ccf8863962e073576d9",
+    // risk oracle api url
+    "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&per_page=10",
   );
   await lender.deployed();
 
