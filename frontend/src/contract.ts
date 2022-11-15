@@ -1,7 +1,7 @@
 export const tokenContractAddress =
-  "0x0Af91C503261Cc3158309Bf0bE743B02C3483227";
-export const nftContractAddress = "0xB0a4E815af29468425ABAAD2A494903a43FCdF05";
-export const contractAddress = "0xcA4DaF627BB90Adf322B616D36654A375592AaFd";
+  "0xA585c64649B0706cD9Bec83153b1bf11EBaD88BF";
+export const nftContractAddress = "0x3Ea081A267e7015067527438CAB17B6BD882eBB1";
+export const contractAddress = "0x87dB58Fc75804941Ec4be3D7E450a9b42e902F50";
 export const tokenContractAbi = [
   {
     inputs: [
@@ -762,6 +762,11 @@ export const contractAbi = [
         name: "truflationJobId_",
         type: "string",
       },
+      {
+        internalType: "string",
+        name: "riskApiUrl_",
+        type: "string",
+      },
     ],
     stateMutability: "nonpayable",
     type: "constructor",
@@ -980,6 +985,35 @@ export const contractAbi = [
   {
     inputs: [
       {
+        internalType: "uint256",
+        name: "amount",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "rate",
+        type: "uint256",
+      },
+      {
+        internalType: "uint256",
+        name: "riskScore",
+        type: "uint256",
+      },
+    ],
+    name: "calculateInterest",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "pure",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
         internalType: "address",
         name: "walletAddress",
         type: "address",
@@ -1169,6 +1203,19 @@ export const contractAbi = [
     name: "requestUpdateLoanConfig",
     outputs: [],
     stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "riskApiUrl",
+    outputs: [
+      {
+        internalType: "string",
+        name: "",
+        type: "string",
+      },
+    ],
+    stateMutability: "view",
     type: "function",
   },
   {
