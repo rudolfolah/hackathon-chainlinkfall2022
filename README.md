@@ -28,6 +28,8 @@ Run the frontend by going into the `frontend` directory and running `npm start`.
 
 Access it at http://localhost:3000
 
+For publishing, the frontend can be built by running `npm run-script build`. After building the `frontend/dist` is moved to `./docs` which is hosted on GitHub Pages and can be accessed here: https://hackathon-chainlinkfall2022.github.io/
+
 ### 3. Risk Oracle
 Run the risk oracle by going into the `riskoracle` directory and running `npm start`. This URL needs a domain name so that it can be accessed by the Chainlink nodes.
 
