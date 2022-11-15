@@ -5,6 +5,7 @@ import "@chainlink/contracts/src/v0.8/ChainlinkClient.sol";
 import "@chainlink/contracts/src/v0.8/ConfirmedOwner.sol";
 import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
+import "@openzeppelin/contracts/utils/math/Math.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol";
@@ -147,11 +148,11 @@ contract Lender is ChainlinkClient, ConfirmedOwner {
         );
         require(
             min > 0.001 ether,
-            "Loan amount minimum must be greater than zero"
+            "Loan amount minimum must be greater than 0.001 ether"
         );
         require(
             max <= 10000 ether,
-            "Loan amount maximum must be less than 10,000 ETH"
+            "Loan amount maximum must be less than 10,000 ether"
         );
         loanAmountMin = min;
         loanAmountMax = max;
@@ -169,6 +170,18 @@ contract Lender is ChainlinkClient, ConfirmedOwner {
         uint256 tokenId
     ) public view returns (uint256, uint256) {
         return (0.01 ether, uint256(10525));
+    }
+
+    function calculateInterest(
+        uint256 amount,
+        uint256 rate,
+        uint256 riskScore
+    ) public pure returns (uint256) {
+        require(rate <= 200);
+        require(rate > 100);
+        require(riskScore >= 0);
+        uint256 riskRate = Math.min(30, Math.max(0, riskScore));
+        return (amount * (rate + riskRate)) / 100;
     }
 
     // Transfers an NFT from the message sender to the contract

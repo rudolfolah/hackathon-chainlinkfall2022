@@ -70,15 +70,9 @@ describe("Lender", function () {
     it("updates minimum and maximum bounds of the loan amount", async function () {
       const { lender, deployer, nft, nftContractOwner, ownerOfNft } =
         await loadFixture(deployLenderFixture);
-      await lender.setLoanAmountBounds(3, 400);
-      expect(await lender.loanAmountMin()).to.equal(3);
-      expect(await lender.loanAmountMax()).to.equal(10000);
-    });
-
-    it("updates minimum and maximum bounds of the loan interest rate", async function () {
-      const { lender, deployer, nft, nftContractOwner, ownerOfNft } =
-        await loadFixture(deployLenderFixture);
-      await lender.setLoanAmountBounds(1, 10);
+      await lender.setLoanAmountBounds(0.003 * 10 ** 10, 9_999 * 10 ** 10);
+      expect(await lender.loanAmountMin()).to.equal(0.003 * 10 ** 10);
+      expect(await lender.loanAmountMax()).to.equal(10_000 * 10 ** 8);
     });
   });
 
@@ -94,31 +88,22 @@ describe("Lender", function () {
       expect(amount).to.equal(0);
       expect(rate).to.equal(0);
     });
-
-    it("returns loan amount and interest rate within configured range", async function () {
-      const { lender, deployer, nft, nftContractOwner, ownerOfNft } =
-        await loadFixture(deployLenderFixture);
-      await lender.setLoanAmountBounds(1, 10);
-      const [amount, rate] = await lender.calculateLoan(
-        ownerOfNft.address,
-        nft.address,
-        1
-      );
-      expect(amount).to.equal(1);
-    });
   });
 
-  describe("Convert bytes result", function () {
-    it("works", async function () {
+  describe("Interest rate calculation", function () {
+    it("returns rate with no risk", async function () {
       const { lender, deployer, nft, nftContractOwner, ownerOfNft } =
         await loadFixture(deployLenderFixture);
-      expect(
-        await lender.toInt256("0x3135352e38373033343836383136323134")
-      ).to.equal(
-        ethers.utils.toUtf8Bytes(
-          '{"timestamp":"2022-11-05T18:10:26.880Z","index":156.69156080283352,"aDayChange":-1.0300078107719828,"aMonthChange":-8.100125327016434}'
-        )
+      expect(await lender.calculateInterest(1_000, 1_01, 0)).to.equal(1_010);
+      expect(await lender.calculateInterest(2 * 10 ** 10, 1_01, 0)).to.equal(
+        2.02 * 10 ** 10
       );
+    });
+
+    it("returns higher rate based on risk score", async function () {
+      const { lender, deployer, nft, nftContractOwner, ownerOfNft } =
+        await loadFixture(deployLenderFixture);
+      expect(await lender.calculateInterest(1_000, 1_01, 1)).to.equal(1_020);
     });
   });
 
