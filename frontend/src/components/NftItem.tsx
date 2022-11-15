@@ -9,17 +9,18 @@ import {
   Text,
   Heading,
   Spacer,
-  Image, useDisclosure
+  Image,
+  useDisclosure,
 } from "@chakra-ui/react";
-import {PlusSquareIcon} from "@chakra-ui/icons";
-import {useEffect, useState} from "react";
-import {useContractWrite, usePrepareContractWrite} from "wagmi";
-import {contractAbi, contractAddress, nftContractAddress} from "../contract";
-import {BigNumber} from "ethers";
-import {RiAppsLine} from "react-icons/ri";
+import { PlusSquareIcon } from "@chakra-ui/icons";
+import { useEffect, useState } from "react";
+import { useContractWrite, usePrepareContractWrite } from "wagmi";
+import { contractAbi, contractAddress, nftContractAddress } from "../contract";
+import { BigNumber } from "ethers";
+import { RiAppsLine } from "react-icons/ri";
 
 export interface LoanOption {
-  numDays: number,
+  numDays: number;
   amount: number;
   rate: number;
 }
@@ -40,35 +41,59 @@ export function NftItem({ name, tokenId, enabled, onClick }: NftItemProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
-    <VStack alignItems={"normal"}
-            padding={5}
-            bgGradient={isOpen ? "linear(102.8deg, #FFFBE8 23.81%, #FFE8E1 90.06%)" : undefined}
+    <VStack
+      alignItems={"normal"}
+      padding={5}
+      bgGradient={
+        isOpen ? "linear(102.8deg, #FFFBE8 23.81%, #FFE8E1 90.06%)" : undefined
+      }
     >
       <Flex py={1} mb={2}>
         <Box flex={"2"} flexBasis={"50%"} onClick={isOpen ? onClose : onOpen}>
-          <Heading as={"h4"} size={"md"} textAlign={"left"}>{name}</Heading>
-          <Image boxSize={isOpen ? "100%" : "60%"} fit={"contain"} src={`/images/nft-example-${tokenId}.png`} />
+          <Heading as={"h4"} size={"md"} textAlign={"left"}>
+            {name}
+          </Heading>
+          <Image
+            boxSize={isOpen ? "100%" : "60%"}
+            fit={"contain"}
+            src={`/images/nft-example-${tokenId}.png`}
+          />
         </Box>
         <Spacer />
         <Box>
-          {isOpen ? <CloseButton onClick={onClose} /> : <IconButton aria-label={"open"} icon={<RiAppsLine />} onClick={onOpen} variant={"ghost"} />}
+          {isOpen ? (
+            <CloseButton onClick={onClose} />
+          ) : (
+            <IconButton
+              aria-label={"open"}
+              icon={<RiAppsLine />}
+              onClick={onOpen}
+              variant={"ghost"}
+            />
+          )}
         </Box>
       </Flex>
       <Collapse in={isOpen} animateOpacity>
         {loanOptions.map((option, index) => (
-          <Flex key={`${option.numDays}-${option.amount}-${option.rate}`} my={1}>
+          <Flex
+            key={`${option.numDays}-${option.amount}-${option.rate}`}
+            my={1}
+          >
             <Box flex={"2"} flexBasis={"50%"} textAlign={"right"} pr={3}>
-              <Text pt={1.5}>
-                {option.numDays}-day loan
-              </Text>
+              <Text pt={1.5}>{option.numDays}-day loan</Text>
             </Box>
             <Box flex={"1"}>
-              <Button w={"170px"}
-                      bgGradient={index == 0 ? "linear(76.71deg, #FEE186 11.01%, #FCD456 31.68%, #FFEAA8 69.1%, #EFC235 97.65%)" : undefined}
-                      variant={"outline"}
-                      borderColor={"#aaa"}
-                      disabled={!enabled}
-                      onClick={onClick}
+              <Button
+                w={"170px"}
+                bgGradient={
+                  index == 0
+                    ? "linear(76.71deg, #FEE186 11.01%, #FCD456 31.68%, #FFEAA8 69.1%, #EFC235 97.65%)"
+                    : undefined
+                }
+                variant={"outline"}
+                borderColor={"#aaa"}
+                disabled={!enabled}
+                onClick={onClick}
               >
                 {option.amount} HPT @ {option.rate}%
               </Button>

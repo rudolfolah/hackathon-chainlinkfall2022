@@ -9,10 +9,7 @@ export function SelectWallet({ opened, close }: SelectWalletProps) {
   if (!opened) {
     return null;
   }
-  return (
-    <div>
-    </div>
-  );
+  return <div></div>;
 }
 
 /*

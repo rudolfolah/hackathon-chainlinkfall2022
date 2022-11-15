@@ -1,50 +1,56 @@
 .button--connect-to-wallet {
-    background: linear-gradient(257.73deg, #FFDE59 5.06%, #ED2222 35.84%, #EF3627 65.62%, #C42222 92.93%);
-    border: 1px solid #000000;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    font-size: 24px;
-    line-height: 29px;
-    text-align: center;
-    padding: 2rem 1rem;
+  background: linear-gradient(
+    257.73deg,
+    #ffde59 5.06%,
+    #ed2222 35.84%,
+    #ef3627 65.62%,
+    #c42222 92.93%
+  );
+  border: 1px solid #000000;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  font-size: 24px;
+  line-height: 29px;
+  text-align: center;
+  padding: 2rem 1rem;
 }
 
 .App--container {
-    width: 375px;
-    height: 812px;
+  width: 375px;
+  height: 812px;
 }
 
 .App--nav,
 .App--marketing {
-    display: none;
+  display: none;
 }
 
 .App--phone-container {
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
 }
 
 @media (min-width: 600px) {
-    .App--container {
-        width: auto;
-        height: auto;
-    }
+  .App--container {
+    width: auto;
+    height: auto;
+  }
 
-    .App--nav {
-        display: flex;
-    }
+  .App--nav {
+    display: flex;
+  }
 
-    .App--marketing {
-        display: block;
-        margin: 12px;
-        padding: 36px;
-        width: 520px;
-    }
-    .App--phone-container {
-        width: 375px;
-        height: 812px;
-        border: 1px solid #2f2f2f;
-        overflow: scroll;
-        cursor: cell;
-        border-radius: 12px;
-    }
+  .App--marketing {
+    display: block;
+    margin: 12px;
+    padding: 36px;
+    width: 520px;
+  }
+  .App--phone-container {
+    width: 375px;
+    height: 812px;
+    border: 1px solid #2f2f2f;
+    overflow: scroll;
+    cursor: cell;
+    border-radius: 12px;
+  }
 }

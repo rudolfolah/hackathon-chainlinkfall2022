@@ -1,4 +1,16 @@
-import { Box, Collapse, CloseButton, Flex, VStack, IconButton, Progress, Button, Text, Heading, Spacer } from "@chakra-ui/react";
+import {
+  Box,
+  Collapse,
+  CloseButton,
+  Flex,
+  VStack,
+  IconButton,
+  Progress,
+  Button,
+  Text,
+  Heading,
+  Spacer,
+} from "@chakra-ui/react";
 
 export interface Loan {
   nftName: string;
@@ -19,13 +31,19 @@ export function LoanItem({ loan }: LoanItemProps) {
   return (
     <Box my={"50px"}>
       <Box my={2}>
-        <Progress colorScheme={loan.paymentProgress < 50 ? "red" : "orange"} size='sm' value={loan.paymentProgress} />
+        <Progress
+          colorScheme={loan.paymentProgress < 50 ? "red" : "orange"}
+          size="sm"
+          value={loan.paymentProgress}
+        />
         <Text as={"b"}>{loan.nftName}</Text>
       </Box>
       <Flex flexDirection={"row"}>
         <Box width={150}>
           <Text>{loan.numDays}-day loan</Text>
-          <Text>{loan.amount} HPT @ {loan.rate}%</Text>
+          <Text>
+            {loan.amount} HPT @ {loan.rate}%
+          </Text>
           <Text>{loan.daysRemaining} days left</Text>
         </Box>
         <Box width={150} textAlign={"right"}>
