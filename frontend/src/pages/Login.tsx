@@ -27,7 +27,7 @@ export function Login() {
     <VStack divider={<Divider borderColor={"gray.400"} />} spacing={8} m={4}>
       <VStack spacing={2}>
         <Center mt={1} ml={2}>
-          <Image src={"/images/logo.png"} width={16} />
+          <Image src={`${process.env.PUBLIC_URL}/images/logo.png`} width={16} />
           <Text
             fontFamily={"'Julius Sans One', sans-serif"}
             fontSize={28}
@@ -76,7 +76,7 @@ export function Login() {
           Success Story
         </Heading>
         <Center>
-          <Image src={"/images/nft-example-7.png"} boxSize={"35%"} />
+          <Image src={`${process.env.PUBLIC_URL}/images/nft-example-7.png`} boxSize={"35%"} />
           <Text p={4} fontSize={13}>
             This NFT was used as collateral for a 7-day loan. The borrower
             received 1.00 HPT with an interest rate of 4.12%. They fully paid

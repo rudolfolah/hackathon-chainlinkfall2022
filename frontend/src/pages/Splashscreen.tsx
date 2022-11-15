@@ -39,7 +39,7 @@ export function Splashscreen({ onClick }: { onClick: () => void }) {
             }}
           >
             <Box p={5}>
-              <Image src={"/images/logo.png"} />
+              <Image src={`${process.env.PUBLIC_URL}/images/logo.png`} />
             </Box>
             <Box mb={100}>
               <Heading
