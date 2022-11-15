@@ -24,7 +24,7 @@ async function main() {
     // truflation job id
     "8b459447262a4ccf8863962e073576d9",
     // risk oracle api url
-    "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&per_page=10",
+    "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&per_page=10", // TODO: change to https://Risk-Oracle-Chainlink-Fall-Hackathon-2022.rudolfolah.repl.co
   );
   await lender.deployed();
 
