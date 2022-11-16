@@ -36,6 +36,9 @@ enum Action {
   UpdateOwnedNfts,
 }
 
+const gasFee = BigNumber.from(500000);
+const overrides = { gasLimit: gasFee };
+
 function reducer(state: NftsState, action: { type: Action; payload?: any }) {
   switch (action.type) {
     case Action.UpdateOwnedNfts:
@@ -81,9 +84,6 @@ export function Nfts() {
       abi: contract.nftContractAbi,
       functionName: "setApprovalForAll",
       args: [contract.contractAddress, true],
-      overrides: {
-        gasLimit: BigNumber.from(200000),
-      },
     });
   const {
     isSuccess: setApprovalForAllIsSuccess,
@@ -95,36 +95,27 @@ export function Nfts() {
       address: contract.nftContractAddress,
       abi: contract.nftContractAbi,
       functionName: "mintCollection",
-      overrides: {
-        gasLimit: BigNumber.from(200000),
-      },
+      overrides,
     }
   );
   const { write: contractWriteMintCollection } = useContractWrite(
     configContractWriteMintCollection
   );
 
-  const { config: configContractWriteSetLoanAmountBounds } =
-    usePrepareContractWrite({
-      address: contract.contractAddress,
-      abi: contract.contractAbi,
-      functionName: "depositNft721",
-      args: [
-        contract.nftContractAddress,
-        BigNumber.from((state.modalNft?.tokenId ?? "-1").toString()),
-      ],
-      // functionName: "requestUpdateLoanConfig",
-      // args: [BigNumber.from(4), BigNumber.from(10)],
-      overrides: {
-        gasLimit: BigNumber.from(200000),
-      },
-    });
-  const {
-    data: setLoanAmountBoundsData,
-    isSuccess: setLoanAmountBoundsIsSuccess,
-    isLoading: setLoanAmountBoundsIsLoading,
-    write: contractWriteSetLoanAmountBounds,
-  } = useContractWrite(configContractWriteSetLoanAmountBounds);
+  const { config: configContractWriteDeposit } = usePrepareContractWrite({
+    address: contract.contractAddress,
+    abi: contract.contractAbi,
+    functionName: "depositNft721",
+    args: [
+      contract.nftContractAddress,
+      BigNumber.from((state.modalNft?.tokenId ?? "-1").toString()),
+    ],
+    enabled: !!state.modalNft,
+    overrides,
+  });
+  const { write: contractWriteDeposit } = useContractWrite(
+    configContractWriteDeposit
+  );
 
   useEffect(() => {
     if (isLoading || !nftOwners) {
@@ -170,7 +161,7 @@ export function Nfts() {
     contractWriteMintCollection?.();
   };
   const depositNft = () => {
-    contractWriteSetLoanAmountBounds?.();
+    contractWriteDeposit?.();
   };
   const acceptLoan = () => {
     depositNft();
@@ -207,7 +198,7 @@ export function Nfts() {
             <Box w={"100%"} my={3} textAlign={"center"}>
               <Text>No NFTs owned</Text>
               <Button
-                onClick={approveForAll}
+                onClick={mintCollection}
                 colorScheme="yellow"
                 bgGradient={
                   "linear(76.71deg, #FEE186 11.01%, #FCD456 31.68%, #FFEAA8 69.1%, #EFC235 97.65%)"
@@ -221,7 +212,7 @@ export function Nfts() {
           {state.ownedNfts.length > 0 && !nftIsApprovedForAll && (
             <Box w={"100%"} my={3} textAlign={"center"}>
               <Button
-                onClick={mintCollection}
+                onClick={approveForAll}
                 colorScheme="yellow"
                 bgGradient={
                   "linear(76.71deg, #FEE186 11.01%, #FCD456 31.68%, #FFEAA8 69.1%, #EFC235 97.65%)"

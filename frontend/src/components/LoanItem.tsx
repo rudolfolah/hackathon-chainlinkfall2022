@@ -13,6 +13,7 @@ import {
 } from "@chakra-ui/react";
 import { useContractWrite, usePrepareContractWrite } from "wagmi";
 import * as contract from "../contract";
+import { BigNumber } from "ethers";
 
 export interface Loan {
   nftName: string;
@@ -29,14 +30,15 @@ export interface LoanItemProps {
   loan: Loan;
 }
 
+const gasFee = BigNumber.from(250000);
+const overrides = { gasLimit: gasFee };
+
 export function LoanItem({ loan }: LoanItemProps) {
   const { config: configContractPayback } = usePrepareContractWrite({
     address: contract.contractAddress,
     abi: contract.contractAbi,
     functionName: "payback",
-    // overrides: {
-    //   gasLimit: BigNumber.from(200000),
-    // },
+    overrides,
   });
   const { write: contractWritePayback } = useContractWrite(
     configContractPayback

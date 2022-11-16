@@ -53,7 +53,8 @@ describe("Lender", function () {
       mockChainlinkToken.address,
       mockChainlinkOracle.address,
       mockTruflationDataFeed.address,
-      "0"
+      "0",
+      "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&per_page=10",
     );
 
     return { lender, deployer, nft, nftContractOwner, ownerOfNft };

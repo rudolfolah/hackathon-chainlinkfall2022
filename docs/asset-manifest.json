@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/hackathon-chainlinkfall2022/static/css/main.7f30c53e.css",
-    "main.js": "/hackathon-chainlinkfall2022/static/js/main.695bba96.js",
+    "main.css": "/hackathon-chainlinkfall2022/static/css/main.82e18fa2.css",
+    "main.js": "/hackathon-chainlinkfall2022/static/js/main.d369add5.js",
     "static/js/787.cda612ba.chunk.js": "/hackathon-chainlinkfall2022/static/js/787.cda612ba.chunk.js",
     "index.html": "/hackathon-chainlinkfall2022/index.html",
-    "main.7f30c53e.css.map": "/hackathon-chainlinkfall2022/static/css/main.7f30c53e.css.map",
-    "main.695bba96.js.map": "/hackathon-chainlinkfall2022/static/js/main.695bba96.js.map",
+    "main.82e18fa2.css.map": "/hackathon-chainlinkfall2022/static/css/main.82e18fa2.css.map",
+    "main.d369add5.js.map": "/hackathon-chainlinkfall2022/static/js/main.d369add5.js.map",
     "787.cda612ba.chunk.js.map": "/hackathon-chainlinkfall2022/static/js/787.cda612ba.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.7f30c53e.css",
-    "static/js/main.695bba96.js"
+    "static/css/main.82e18fa2.css",
+    "static/js/main.d369add5.js"
   ]
 }

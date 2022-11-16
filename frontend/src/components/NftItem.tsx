@@ -56,7 +56,9 @@ export function NftItem({ name, tokenId, enabled, onClick }: NftItemProps) {
           <Image
             boxSize={isOpen ? "100%" : "60%"}
             fit={"contain"}
-            src={`${process.env.PUBLIC_URL}/images/nft-example-${tokenId}.png`}
+            src={`${process.env.PUBLIC_URL}/images/nft-example-${
+              tokenId % 12
+            }.png`}
           />
         </Box>
         <Spacer />
