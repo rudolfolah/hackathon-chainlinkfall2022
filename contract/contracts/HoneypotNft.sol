@@ -10,7 +10,14 @@ contract HoneypotNft is ERC721, Ownable {
 
     Counters.Counter private _tokenIdCounter;
 
+    // On initialization, the contract owner (message sender) will immediately receive 12 NFTs
     constructor() ERC721("Test NFT", "TESTNFT") {
+        mintCollection();
+    }
+
+    // Mint 12 NFTs for the message sender.
+    // For testnet, testing purposes anyone can call this function.
+    function mintCollection() public {
         safeMint(msg.sender);
         safeMint(msg.sender);
         safeMint(msg.sender);
@@ -27,7 +34,7 @@ contract HoneypotNft is ERC721, Ownable {
         safeMint(msg.sender);
     }
 
-    function safeMint(address to) public onlyOwner {
+    function safeMint(address to) public {
         uint256 tokenId = _tokenIdCounter.current();
         _tokenIdCounter.increment();
         _safeMint(to, tokenId);

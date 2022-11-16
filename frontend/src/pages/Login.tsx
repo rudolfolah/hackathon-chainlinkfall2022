@@ -76,7 +76,10 @@ export function Login() {
           Success Story
         </Heading>
         <Center>
-          <Image src={`${process.env.PUBLIC_URL}/images/nft-example-7.png`} boxSize={"35%"} />
+          <Image
+            src={`${process.env.PUBLIC_URL}/images/nft-example-7.png`}
+            boxSize={"35%"}
+          />
           <Text p={4} fontSize={13}>
             This NFT was used as collateral for a 7-day loan. The borrower
             received 1.00 HPT with an interest rate of 4.12%. They fully paid

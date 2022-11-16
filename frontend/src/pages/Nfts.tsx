@@ -83,11 +83,23 @@ export function Nfts() {
       // },
     });
   const {
-    data: setApprovalForAll,
     isSuccess: setApprovalForAllIsSuccess,
-    isLoading: setApprovalForAllIsLoading,
     write: contractWriteSetApprovalForAll,
   } = useContractWrite(configContractWriteSetApprovalForAll);
+
+  const { config: configContractWriteMintCollection } = usePrepareContractWrite(
+    {
+      address: contract.nftContractAddress,
+      abi: contract.nftContractAbi,
+      functionName: "mintCollection",
+      // overrides: {
+      //   gasLimit: BigNumber.from(200000),
+      // },
+    }
+  );
+  const { write: contractWriteMintCollection } = useContractWrite(
+    configContractWriteMintCollection
+  );
 
   const { config: configContractWriteSetLoanAmountBounds } =
     usePrepareContractWrite({
@@ -151,6 +163,9 @@ export function Nfts() {
   const approveForAll = () => {
     contractWriteSetApprovalForAll?.();
   };
+  const mintCollection = () => {
+    contractWriteMintCollection?.();
+  };
   const depositNft = () => {
     contractWriteSetLoanAmountBounds?.();
   };
@@ -184,10 +199,26 @@ export function Nfts() {
               <Skeleton />
             </Box>
           )}
-          {!nftIsApprovedForAll && (
-            <Box w={"100%"}>
+
+          {state.ownedNfts.length === 0 && (
+            <Box w={"100%"} my={3} textAlign={"center"}>
+              <Text>No NFTs owned</Text>
               <Button
                 onClick={approveForAll}
+                colorScheme="yellow"
+                bgGradient={
+                  "linear(76.71deg, #FEE186 11.01%, #FCD456 31.68%, #FFEAA8 69.1%, #EFC235 97.65%)"
+                }
+              >
+                Mint NFTs
+              </Button>
+            </Box>
+          )}
+
+          {state.ownedNfts.length > 0 && !nftIsApprovedForAll && (
+            <Box w={"100%"} my={3} textAlign={"center"}>
+              <Button
+                onClick={mintCollection}
                 colorScheme="yellow"
                 bgGradient={
                   "linear(76.71deg, #FEE186 11.01%, #FCD456 31.68%, #FFEAA8 69.1%, #EFC235 97.65%)"
@@ -197,6 +228,7 @@ export function Nfts() {
               </Button>
             </Box>
           )}
+
           {state.ownedNfts.map((ownedNft) => (
             <Box key={`prototype-nft-${ownedNft}`} w={"100%"}>
               <NftItem

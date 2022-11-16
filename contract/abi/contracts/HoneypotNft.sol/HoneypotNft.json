@@ -180,6 +180,13 @@
   },
   {
     "inputs": [],
+    "name": "mintCollection",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "name",
     "outputs": [
       {

@@ -69,7 +69,10 @@ export default function App() {
     <WagmiConfig client={client}>
       <Box className={"App--nav"} p={2}>
         <Box mt={1} ml={2}>
-          <Image src={`${process.env.PUBLIC_URL}/images/logo-small.png`} width={16} />
+          <Image
+            src={`${process.env.PUBLIC_URL}/images/logo-small.png`}
+            width={16}
+          />
           <Text
             fontFamily={"'Julius Sans One', sans-serif"}
             fontSize={18}
