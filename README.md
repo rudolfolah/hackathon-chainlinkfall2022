@@ -35,6 +35,34 @@ Run the risk oracle by going into the `riskoracle` directory and running `npm st
 
 For testing purposes you should be able to go to http://localhost:8080/ and see a JSON response that contains a `riskScore` field. You can supply the `?a=some_address_here` as a query parameter to see what the risk score for that wallet address is.
 
+#### Training the Risk Oracle Machine Learning Model
+- You will need a QuickNode endpoint to Ethereum or Polygon chains.
+- You will need [bacalhau working locally](https://docs.bacalhau.org/getting-started/installation) 
+
+Train the model:
+
+```shell
+npm install
+# Get the data from the blockchain and process it into a CSV file
+npm run-script gather
+npm run-script train
+````
+
+When running `index.js` through `npm start`, the model will be downloaded from IPFS.
+
+##### Train the model through Bacalhau
+```shell
+bacalhau version
+bacalhau docker run --rm \
+  -v ./:/inputs \
+  -v ./:/outputs \
+  node:16-alpine \
+    sh -c "npm install && npm run-script train"
+```
+
+The model is trained through Bacalhau and the trained model is saved and uploaded to IPFS.
+
+
 # Documentation and Marketing
 
 [Architecture and System Design](./Architecture%20and%20System%20Design%20-%20HONEYBEE%20LOANS.pdf)
