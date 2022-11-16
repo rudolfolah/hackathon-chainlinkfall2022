@@ -39,6 +39,6 @@ For testing purposes you should be able to go to http://localhost:8080/ and see 
 
 [Architecture and System Design](./Architecture%20and%20System%20Design%20-%20HONEYBEE%20LOANS.pdf)
 
-![App advertisement](/Users/rudolfo/Workspace/hackathon-chainlinkfall2022/App ad - HONEYBEE LOANS.png)
+![App advertisement](./App%20ad%20-%20HONEYBEE%20LOANS.png)
 
-![Google Play Store advertisement](/Users/rudolfo/Workspace/hackathon-chainlinkfall2022/Play store - NFT Loans.png)
+![Google Play Store advertisement](./Play%20store%20-%20NFT%20Loans.png)
