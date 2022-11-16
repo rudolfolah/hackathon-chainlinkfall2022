@@ -13,7 +13,10 @@ import { NftItem } from "../components/NftItem";
 import * as contract from "../contract";
 import { AcceptLoanModal } from "../components/AcceptLoanModal";
 
-const nftIds = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
+const nftIds = [
+  0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21,
+  22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
+];
 
 interface NftsState {
   modalOpen: boolean;
@@ -78,9 +81,9 @@ export function Nfts() {
       abi: contract.nftContractAbi,
       functionName: "setApprovalForAll",
       args: [contract.contractAddress, true],
-      // overrides: {
-      //   gasLimit: BigNumber.from(200000),
-      // },
+      overrides: {
+        gasLimit: BigNumber.from(200000),
+      },
     });
   const {
     isSuccess: setApprovalForAllIsSuccess,
@@ -92,9 +95,9 @@ export function Nfts() {
       address: contract.nftContractAddress,
       abi: contract.nftContractAbi,
       functionName: "mintCollection",
-      // overrides: {
-      //   gasLimit: BigNumber.from(200000),
-      // },
+      overrides: {
+        gasLimit: BigNumber.from(200000),
+      },
     }
   );
   const { write: contractWriteMintCollection } = useContractWrite(
