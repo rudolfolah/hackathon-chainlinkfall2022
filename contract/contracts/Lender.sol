@@ -121,7 +121,7 @@ contract Lender is ChainlinkClient, ConfirmedOwner {
             this.fulfillRisk.selector
         );
         req.add("get", riskApiUrl);
-        req.add("path", "0,id"); // TODO: replace with: req.add("path", "riskScore");
+        req.add("path", "riskScore");
         return sendChainlinkRequest(req, 1000000000000000000);
     }
 
@@ -165,14 +165,16 @@ contract Lender is ChainlinkClient, ConfirmedOwner {
         truflationDoRequest();
     }
 
+    // Calculates the amount to be loaned
     function calculateLoan(
         address walletAddress,
         address nftContract,
         uint256 tokenId
     ) public view returns (uint256, uint256) {
-        return (0.01 ether, uint256(10525));
+        return (loanAmountMin, uint256(10525));
     }
 
+    // Calculates the loan amount including interest based on the amount, interest rate and the risk score
     function calculateInterest(
         uint256 amount,
         uint256 rate,
@@ -211,9 +213,10 @@ contract Lender is ChainlinkClient, ConfirmedOwner {
         IERC20 token = IERC20(allowedTokenContract);
         token.transfer(msg.sender, loan.loanAmount);
         loan.loanSent = true;
-        emit Deposit721(nftContract, tokenId, 0, 0);
+        emit Deposit721(nftContract, tokenId, loanAmount, loanInterestRate);
     }
 
+    // Pays the loan back to the contract in full using the prototype ERC20 token and the prototype test NFT contract
     function payback() public {
         Loan storage loan = loans[msg.sender];
         IERC20 token = IERC20(allowedTokenContract);
@@ -221,25 +224,22 @@ contract Lender is ChainlinkClient, ConfirmedOwner {
         IERC721 nft = IERC721(loan.nftContract);
         nft.safeTransferFrom(address(this), msg.sender, loan.tokenId);
         unpaidLoanAmounts[msg.sender] = 0;
-        //        msg.value
-        //        uint256 remainingBalance = 0;
-        //        if (remainingBalance == 0) {}
         emit Withdrawal(loan.nftContract, loan.tokenId);
         delete loans[msg.sender];
     }
 
-    // When the NFT is received, transfer the token loan amount
+    // When the NFT is received, transfer the token loan amount in the prototype ERC20 currency
     function onERC721Received(
         address operator,
         address from,
         uint256 tokenId,
         bytes calldata data
     ) external returns (bytes4) {
-        //        IERC20 token = IERC20(allowedTokenContract);
-        //        Loan memory loan = loans[borrower[from][tokenId]];
-        //        loan.nftReceived = true;
-        //        require(token.transfer(borrower[from][tokenId], loan.loanAmount));
-        //        loan.loanSent = true;
+        IERC20 token = IERC20(allowedTokenContract);
+        Loan memory loan = loans[borrower[from][tokenId]];
+        loan.nftReceived = true;
+        require(token.transfer(borrower[from][tokenId], loan.loanAmount));
+        loan.loanSent = true;
         return this.onERC721Received.selector;
     }
 }
